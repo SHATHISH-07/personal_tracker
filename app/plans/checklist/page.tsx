@@ -128,6 +128,18 @@ export default function TopicsChecklistPage() {
     }
   };
 
+  const handleToggleTopic = async (topicIndex: number) => {
+    if (!selectedPlan) return;
+    const topic = selectedPlan.topics[topicIndex];
+    const currentItems = getNormalizedChecklist(topic);
+    if (currentItems.length > 0) return;
+
+    await updateTopicInPlan(topicIndex, {
+      ...topic,
+      completed: !topic.completed,
+    });
+  };
+
   const handleAddItem = async (e: React.FormEvent, topicIndex: number) => {
     e.preventDefault();
     const title = newItemTitles[topicIndex] || "";
@@ -270,9 +282,11 @@ export default function TopicsChecklistPage() {
                 (i) => i.completed,
               ).length;
               const totalCount = checklistItems.length;
-              const progressPercent =
-                totalCount > 0
-                  ? Math.round((completedCount / totalCount) * 100)
+              const hasChecklistItems = totalCount > 0;
+              const progressPercent = hasChecklistItems
+                ? Math.round((completedCount / totalCount) * 100)
+                : topic.completed
+                  ? 100
                   : 0;
               const isExpanded = expandedTopicIndex === topicIdx;
 
@@ -292,8 +306,36 @@ export default function TopicsChecklistPage() {
                     }
                     className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none group"
                   >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleTopic(topicIdx);
+                        }}
+                        disabled={hasChecklistItems || saving}
+                        title={
+                          hasChecklistItems
+                            ? "Complete the checklist items to finish this topic"
+                            : topic.completed
+                              ? "Mark topic as in progress"
+                              : "Mark topic as completed"
+                        }
+                        className={`mt-1 shrink-0 rounded-full transition-colors ${
+                          hasChecklistItems
+                            ? "cursor-not-allowed opacity-60"
+                            : "cursor-pointer hover:scale-105"
+                        }`}
+                      >
+                        {topic.completed ? (
+                          <CheckCircle2 className="w-6 h-6 text-emerald-600 fill-emerald-100" />
+                        ) : (
+                          <Circle className="w-6 h-6 text-[#a1a1aa] hover:text-black" />
+                        )}
+                      </button>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-1">
                         <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] px-2 py-0.5 font-bold text-[10px] uppercase tracking-wider">
                           {selectedPlan.planType === "weekly"
                             ? "Week"
@@ -310,17 +352,22 @@ export default function TopicsChecklistPage() {
                           </Badge>
                         )}
                       </div>
-                      <h2
-                        className={`text-xl font-black leading-tight truncate group-hover:underline ${topic.completed ? "text-[#71717a] line-through" : "text-black"}`}
-                      >
-                        {topic.name}
-                      </h2>
+                        <h2
+                          className={`text-xl font-black leading-tight truncate group-hover:underline ${topic.completed ? "text-[#71717a] line-through" : "text-black"}`}
+                        >
+                          {topic.name}
+                        </h2>
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-6 self-start sm:self-auto shrink-0">
                       <div className="text-right hidden sm:block">
                         <span className="text-xs font-black text-black block">
-                          {completedCount} / {totalCount} Subtopics
+                          {hasChecklistItems
+                            ? `${completedCount} / ${totalCount} Subtopics`
+                            : topic.completed
+                              ? "Topic Completed"
+                              : "Topic Pending"}
                         </span>
                         <span className="text-[10px] font-bold text-[#71717a]">
                           {progressPercent}% Mastery
@@ -365,7 +412,11 @@ export default function TopicsChecklistPage() {
                             Checklist Items
                           </h3>
                           <Badge className="bg-white text-black border border-[#e4e4e7] px-2 py-0.5 font-bold text-xs font-mono">
-                            {totalCount - completedCount} Remaining
+                            {hasChecklistItems
+                              ? `${totalCount - completedCount} Remaining`
+                              : topic.completed
+                                ? "Done"
+                                : "Pending"}
                           </Badge>
                         </div>
 
@@ -403,8 +454,8 @@ export default function TopicsChecklistPage() {
                               No checklist items added
                             </p>
                             <p className="text-xs text-[#71717a] mt-1">
-                              Break this topic down into smaller actionable
-                              steps.
+                              Use the topic checkbox above, or add smaller
+                              actionable steps.
                             </p>
                           </div>
                         ) : (

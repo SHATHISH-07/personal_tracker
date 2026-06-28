@@ -160,6 +160,7 @@ export default function TimesheetPage() {
 
   // Filter entries for selected modal date
   const selectedDateEntries = entries.filter((e) => e.date === selectedDateStr);
+  const enteredDaysCount = new Set(entries.map((entry) => entry.date)).size;
 
   const monthNames = [
     "January",
@@ -232,6 +233,9 @@ export default function TimesheetPage() {
           <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
             Timesheet
           </h1>
+          <Badge className="bg-[#f4f4f5] text-[#1e1e1e] border-[#e4e4e7] font-extrabold text-xs px-3 py-1">
+            {enteredDaysCount} records
+          </Badge>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">

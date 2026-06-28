@@ -42,27 +42,21 @@ export async function GET() {
       }
     }
 
-    // Generate 365 days heatmap data
-    const heatmapData = [];
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(endDate.getDate() - 364);
+    const heatmapData = Object.entries(logMap)
+      .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
+      .map(([date, mins]) => {
+        let level = 0;
+        if (mins > 0 && mins < 30) level = 1;
+        else if (mins >= 30 && mins < 60) level = 2;
+        else if (mins >= 60 && mins < 120) level = 3;
+        else if (mins >= 120) level = 4;
 
-    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-      const ds = d.toISOString().split("T")[0];
-      const mins = logMap[ds] || 0;
-      let level = 0;
-      if (mins > 0 && mins < 30) level = 1;
-      else if (mins >= 30 && mins < 60) level = 2;
-      else if (mins >= 60 && mins < 120) level = 3;
-      else if (mins >= 120) level = 4;
-
-      heatmapData.push({
-        date: ds,
-        count: mins,
-        level,
+        return {
+          date,
+          count: mins,
+          level,
+        };
       });
-    }
 
     return NextResponse.json({
       success: true,

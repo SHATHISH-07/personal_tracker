@@ -6,14 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
-import {
-  ArrowLeft,
-  Plus,
-  Trash2,
-  BookOpen,
-  Layers,
-  CheckCircle2,
-} from "lucide-react";
+import { Plus, Trash2, Goal, Layers, CheckCircle2 } from "lucide-react";
 
 interface TopicItem {
   name: string;
@@ -33,7 +26,6 @@ export default function CreatePlanPage() {
 
   const [topicNameInput, setTopicNameInput] = useState("");
   const [topicDescInput, setTopicDescInput] = useState("");
-  const [topicSubInput, setTopicSubInput] = useState("");
   const [topicPeriodInput, setTopicPeriodInput] = useState("1");
   const [topicsList, setTopicsList] = useState<TopicItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -48,17 +40,11 @@ export default function CreatePlanPage() {
     if (("key" in e && e.key === "Enter") || e.type === "click") {
       e.preventDefault();
       if (topicNameInput.trim()) {
-        const subtopics = topicSubInput.trim()
-          ? topicSubInput
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean)
-          : [];
         const pNum = parseInt(topicPeriodInput, 10) || 1;
         const newTopic: TopicItem = {
           name: topicNameInput.trim(),
           description: topicDescInput.trim(),
-          subtopics,
+          subtopics: [],
           monthNumber: pNum,
           periodNumber: pNum,
           completed: false,
@@ -66,7 +52,6 @@ export default function CreatePlanPage() {
         setTopicsList([...topicsList, newTopic]);
         setTopicNameInput("");
         setTopicDescInput("");
-        setTopicSubInput("");
       }
     }
   };
@@ -115,21 +100,13 @@ export default function CreatePlanPage() {
           <div className="flex items-center justify-between w-full">
             <div>
               <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
-                Create Upskill Roadmap
+                Create Upskill Plan
               </h1>
               <p className="text-sm text-[#71717a] mt-1">
                 Design your intensive weekly or monthly learning curriculum with
                 detailed goals.
               </p>
             </div>
-            <button
-              onClick={() => router.push("/plans")}
-              className="px-5 py-2.5 rounded-xl bg-[#f4f4f5] border border-[#e4e4e7] hover:bg-[#e4e4e7] text-black font-extrabold text-xs transition-all cursor-pointer shadow-xs flex items-center gap-2"
-              title="Back to Plans"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Roadmaps</span>
-            </button>
           </div>
         </div>
 
@@ -138,13 +115,9 @@ export default function CreatePlanPage() {
           <Card className="p-8 bg-white border-[#e4e4e7] shadow-2xs space-y-6 rounded-2xl">
             <div className="border-b border-[#e4e4e7] pb-4">
               <h2 className="text-lg font-bold text-black flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-black" />
-                <span>1. Roadmap Overview & Big Picture</span>
+                <Goal className="w-5 h-5 text-black" />
+                <span>1. Upskill Plan Overview</span>
               </h2>
-              <p className="text-xs text-[#71717a] mt-1">
-                Select whether this is a Weekly or Monthly plan, give it a
-                title, timeframe, and description.
-              </p>
             </div>
 
             {/* Plan Type Selector Row */}
@@ -158,22 +131,22 @@ export default function CreatePlanPage() {
                   onClick={() => handlePlanTypeChange("monthly")}
                   className={`py-3.5 px-5 rounded-xl font-extrabold text-sm border transition-all cursor-pointer flex items-center justify-center gap-2 ${
                     planType === "monthly"
-                      ? "bg-black text-white border-black shadow-md scale-[1.01]"
+                      ? "bg-[#272727] text-white border-black shadow-md scale-[1.01]"
                       : "bg-[#f4f4f5] text-black border-[#e4e4e7] hover:bg-[#e4e4e7]"
                   }`}
                 >
-                  <span>Monthly Roadmap (by Months)</span>
+                  <span>Monthly Plan</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handlePlanTypeChange("weekly")}
                   className={`py-3.5 px-5 rounded-xl font-extrabold text-sm border transition-all cursor-pointer flex items-center justify-center gap-2 ${
                     planType === "weekly"
-                      ? "bg-black text-white border-black shadow-md scale-[1.01]"
+                      ? "bg-[#272727] text-white border-black shadow-md scale-[1.01]"
                       : "bg-[#f4f4f5] text-black border-[#e4e4e7] hover:bg-[#e4e4e7]"
                   }`}
                 >
-                  <span>Weekly Roadmap (by Weeks)</span>
+                  <span>Weekly Plan</span>
                 </button>
               </div>
             </div>
@@ -250,13 +223,8 @@ export default function CreatePlanPage() {
               <div>
                 <h2 className="text-lg font-bold text-black flex items-center gap-2">
                   <Layers className="w-5 h-5 text-black" />
-                  <span>2. Curriculum Modules & Topics</span>
+                  <span>2. Curriculum & Topics</span>
                 </h2>
-                <p className="text-xs text-[#71717a] mt-1">
-                  Break down your roadmap into specific{" "}
-                  {planType === "weekly" ? "weekly" : "monthly"} topics and
-                  actionable subtopics.
-                </p>
               </div>
               <span className="bg-[#f4f4f5] border border-[#e4e4e7] px-3 py-1 rounded-full text-xs font-bold text-black">
                 {topicsList.length} Topics Added
@@ -311,30 +279,23 @@ export default function CreatePlanPage() {
                 <Textarea
                   value={topicDescInput}
                   onChange={(e) => setTopicDescInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleAddTopicTag(e);
+                    }
+                  }}
                   placeholder="Explain what specifically will be covered or built in this topic..."
                   rows={3}
                   className="bg-white border-[#e4e4e7] text-black text-sm p-3 rounded-lg resize-y"
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row items-stretch md:items-end gap-3">
-                <div className="flex-1">
-                  <label className="block text-xs font-bold text-[#52525b] mb-1.5">
-                    Subtopics / Keywords (Comma-separated)
-                  </label>
-                  <Input
-                    type="text"
-                    value={topicSubInput}
-                    onChange={(e) => setTopicSubInput(e.target.value)}
-                    onKeyDown={handleAddTopicTag}
-                    placeholder="e.g. Raft Consensus, CAP Theorem, WebSockets"
-                    className="bg-white border-[#e4e4e7] text-black text-sm h-10 font-mono"
-                  />
-                </div>
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={handleAddTopicTag}
-                  className="px-6 py-2.5 rounded-lg bg-black hover:bg-[#27272a] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all shrink-0 h-10"
+                  className="px-6 py-2.5 rounded-lg bg-[#272727] hover:bg-[#27272a] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all h-10"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Topic to Curriculum</span>
@@ -378,18 +339,6 @@ export default function CreatePlanPage() {
                               {item.description}
                             </p>
                           )}
-                          {item.subtopics && item.subtopics.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5 pt-2">
-                              {item.subtopics.map((s, sI) => (
-                                <span
-                                  key={sI}
-                                  className="px-2 py-0.5 bg-white border border-[#e4e4e7] rounded-md text-xs font-mono text-[#52525b] shadow-2xs"
-                                >
-                                  {s}
-                                </span>
-                              ))}
-                            </div>
-                          )}
                         </div>
                         <button
                           type="button"
@@ -419,10 +368,10 @@ export default function CreatePlanPage() {
             <button
               type="submit"
               disabled={submitting || !title.trim()}
-              className="px-8 py-3 rounded-xl bg-black hover:bg-[#27272a] text-white font-bold text-sm shadow-md transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              className="px-8 py-3 rounded-xl bg-[#272727] hover:bg-[#27272a] text-white font-bold text-sm shadow-md transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2"
             >
               <CheckCircle2 className="w-5 h-5" />
-              <span>{submitting ? "Creating Roadmap..." : "Save & Continue to Overview ➔"}</span>
+              <span>{submitting ? "Creating Plan..." : "Save Plan ➔"}</span>
             </button>
           </div>
         </form>

@@ -4,32 +4,38 @@ import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Clock8,
-  CheckCircle2,
-  Download,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, IndianRupee, Download } from "lucide-react";
+import * as XLSX from "xlsx";
 
-interface TimesheetEntry {
+interface ExpenseEntry {
   _id: string;
   date: string; // YYYY-MM-DD
-  projectTitle: string;
-  description: string;
-  hours: number;
   category: string;
+  description: string;
+  amount: number;
 }
 
-export default function TimesheetPage() {
+const EXPENSE_CATEGORIES = [
+  "Food & Dining",
+  "Transportation",
+  "Housing & Utilities",
+  "Shopping",
+  "Entertainment",
+  "Health & Fitness",
+  "Savings & Investments",
+  "Miscellaneous",
+];
+
+export default function ExpensesPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [entries, setEntries] = useState<TimesheetEntry[]>([]);
+  const [entries, setEntries] = useState<ExpenseEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Modal State
   const [selectedDateStr, setSelectedDateStr] = useState<string | null>(null);
-  const [projectTitle, setProjectTitle] = useState("");
+  const [category, setCategory] = useState(EXPENSE_CATEGORIES[0]);
   const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState<number | "">("");
   const [saving, setSaving] = useState(false);
 
   // Helper to format date string YYYY-MM-DD
@@ -49,13 +55,13 @@ export default function TimesheetPage() {
     async function loadEntries() {
       try {
         setLoading(true);
-        const res = await fetch("/api/timesheet");
+        const res = await fetch("/api/expenses");
         const data = await res.json();
         if (isMounted && data.success) {
           setEntries(data.data || []);
         }
       } catch (e) {
-        console.error("Failed to fetch timesheet entries:", e);
+        console.error("Failed to fetch expense entries:", e);
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -115,35 +121,36 @@ export default function TimesheetPage() {
 
   const handleDayClick = (dateStr: string) => {
     setSelectedDateStr(dateStr);
-    setProjectTitle("");
+    setCategory(EXPENSE_CATEGORIES[0]);
     setDescription("");
+    setAmount("");
   };
 
   const handleSaveEntry = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedDateStr || !projectTitle.trim() || !description.trim()) return;
+    if (!selectedDateStr || !category || !description.trim() || amount === "")
+      return;
 
     setSaving(true);
     try {
-      const res = await fetch("/api/timesheet", {
+      const res = await fetch("/api/expenses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           date: selectedDateStr,
-          projectTitle: projectTitle.trim(),
+          category,
           description: description.trim(),
-          hours: 0,
-          category: "Work",
+          amount: Number(amount),
         }),
       });
       const data = await res.json();
       if (data.success) {
         setEntries((prev) => [data.data, ...prev]);
-        setProjectTitle("");
         setDescription("");
+        setAmount("");
       }
     } catch (e) {
-      console.error("Error saving timesheet entry:", e);
+      console.error("Error saving expense entry:", e);
     } finally {
       setSaving(false);
     }
@@ -152,7 +159,7 @@ export default function TimesheetPage() {
   const handleDeleteEntry = async (id: string) => {
     setEntries((prev) => prev.filter((item) => item._id !== id));
     try {
-      await fetch(`/api/timesheet/${id}`, { method: "DELETE" });
+      await fetch(`/api/expenses/${id}`, { method: "DELETE" });
     } catch (e) {
       console.error("Error deleting entry:", e);
     }
@@ -188,39 +195,57 @@ export default function TimesheetPage() {
   };
 
   const handleDownloadExcel = () => {
-    const header = ["Month", "Date", "Project Title", "Description"];
-    const csvRows = [header.join(",")];
-
+    // Filter to current month only? The user didn't specify, but usually we export the visible month or all data.
+    // Let's export all loaded entries (or we could filter by current month).
     const sortedEntries = [...entries].sort((a, b) =>
       a.date.localeCompare(b.date),
     );
 
-    sortedEntries.forEach((entry) => {
+    const exportData = sortedEntries.map((entry) => {
       const [y, m, d] = entry.date.split("-").map(Number);
       const dateObj = new Date(y, m - 1, d);
       const monthStr = dateObj.toLocaleDateString("en-US", { month: "long" });
 
-      const escapeCsv = (str: string) => `"${str.replace(/"/g, '""')}"`;
-
-      csvRows.push(
-        [
-          escapeCsv(monthStr),
-          escapeCsv(entry.date),
-          escapeCsv(entry.projectTitle),
-          escapeCsv(entry.description),
-        ].join(","),
-      );
+      return {
+        Month: monthStr,
+        Date: entry.date,
+        Category: entry.category,
+        Description: entry.description,
+        Amount: entry.amount,
+      };
     });
 
-    const csvString = csvRows.join("\n");
-    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `timesheet_${monthNames[month]}_${year}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (exportData.length === 0) {
+      exportData.push({
+        Month: "",
+        Date: "",
+        Category: "",
+        Description: "No expenses recorded.",
+        Amount: 0,
+      });
+    }
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    ws["!cols"] = [
+      { wch: 15 }, // Month
+      { wch: 15 }, // Date
+      { wch: 25 }, // Category
+      { wch: 45 }, // Description
+      { wch: 12 }, // Amount
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Expenses");
+
+    XLSX.writeFile(wb, `expenses_${monthNames[month]}_${year}.xlsx`);
+  };
+
+  // Helper to format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+    }).format(amount);
   };
 
   return (
@@ -228,9 +253,9 @@ export default function TimesheetPage() {
       {/* Header */}
       <div className="bg-white border border-[#e4e4e7] px-6 py-4 rounded-xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <Clock8 className="w-6 h-6 text-[#1e1e1e]" />
+          <IndianRupee className="w-6 h-6 text-[#1e1e1e]" />
           <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
-            Timesheet
+            Expense Tracker
           </h1>
         </div>
 
@@ -238,7 +263,7 @@ export default function TimesheetPage() {
           <button
             onClick={handleDownloadExcel}
             className="px-3.5 py-2 rounded-lg bg-white border border-[#e4e4e7] hover:bg-[#f4f4f5] text-[#1e1e1e] font-extrabold text-xs transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
-            title="Export as Excel / CSV"
+            title="Export as Excel"
           >
             <Download className="w-3.5 h-3.5" />
             Export
@@ -291,7 +316,7 @@ export default function TimesheetPage() {
             <div className="text-center space-y-3">
               <div className="loading-spinner mx-auto" />
               <p className="text-sm font-bold text-[#71717a]">
-                Loading timesheet records...
+                Loading expense records...
               </p>
             </div>
           </div>
@@ -311,6 +336,10 @@ export default function TimesheetPage() {
               const isToday = cell.dateStr === todayStr;
               const isSelected = cell.dateStr === selectedDateStr;
               const hasLogs = dayEntries.length > 0;
+              const dayTotal = dayEntries.reduce(
+                (acc, curr) => acc + curr.amount,
+                0,
+              );
 
               return (
                 <div
@@ -343,10 +372,8 @@ export default function TimesheetPage() {
                     </span>
 
                     {hasLogs && (
-                      <span className="flex items-center gap-1 text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full shadow-2xs">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        {dayEntries.length} log
-                        {dayEntries.length > 1 ? "s" : ""}
+                      <span className="flex items-center gap-1 text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-full shadow-2xs">
+                        {formatCurrency(dayTotal)}
                       </span>
                     )}
                   </div>
@@ -356,10 +383,12 @@ export default function TimesheetPage() {
                     {dayEntries.slice(0, 3).map((entry) => (
                       <div
                         key={entry._id}
-                        className="text-[11px] font-bold px-2 py-1 rounded bg-[#f4f4f5] border border-[#e4e4e7] text-[#1e1e1e] truncate flex items-center gap-1.5 group-hover:bg-white transition-colors"
+                        className="text-[11px] font-bold px-2 py-1 rounded bg-[#f4f4f5] border border-[#e4e4e7] text-[#1e1e1e] truncate flex items-center justify-between gap-1.5 group-hover:bg-white transition-colors"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />
-                        <span className="truncate">{entry.projectTitle}</span>
+                        <div className="flex items-center gap-1.5 truncate">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                          <span className="truncate">{entry.description}</span>
+                        </div>
                       </div>
                     ))}
                     {dayEntries.length > 3 && (
@@ -402,55 +431,83 @@ export default function TimesheetPage() {
 
             {/* Modal Content */}
             <div className="p-6 md:p-8 overflow-y-auto space-y-8 flex-1">
-              {/* Form to Add New Work Log */}
+              {/* Form to Add New Expense Log */}
               <form
                 onSubmit={handleSaveEntry}
                 className="bg-[#f4f4f5]/70 p-6 md:p-8 rounded-2xl border border-[#e4e4e7] space-y-6 shadow-2xs"
               >
                 <div className="flex items-center justify-end border-b border-[#e4e4e7] pb-3">
                   <span className="text-xs font-bold text-[#71717a]">
-                    Logging for {formatReadableDate(selectedDateStr)}
+                    Logging expense for {formatReadableDate(selectedDateStr)}
                   </span>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
-                    Project Title <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="e.g. Client Portal Redesign, Backend Sprint Tasks..."
-                    value={projectTitle}
-                    onChange={(e) => setProjectTitle(e.target.value)}
-                    required
-                    className="bg-white border-[#e4e4e7] focus:border-[#1e1e1e] font-bold text-base px-4 py-6 rounded-xl w-full"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
+                      Category <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      required
+                      className="w-full bg-white border border-[#e4e4e7] focus:outline-none focus:border-[#1e1e1e] font-medium text-sm px-4 py-3 rounded-xl transition-colors"
+                    >
+                      {EXPENSE_CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
+                      Amount <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <IndianRupee className="w-4 h-4 text-[#71717a]" />
+                      </div>
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        value={amount}
+                        onChange={(e) =>
+                          setAmount(
+                            e.target.value ? Number(e.target.value) : "",
+                          )
+                        }
+                        step="0.01"
+                        min="0"
+                        required
+                        className="bg-white border-[#e4e4e7] focus:border-[#1e1e1e] font-bold text-base pl-8 pr-4 py-6 rounded-xl w-full"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
-                    Detailed Work Description{" "}
-                    <span className="text-red-500">*</span>
+                    Description <span className="text-red-500">*</span>
                   </label>
-                  <textarea
-                    rows={7}
-                    placeholder="Describe specific achievements, tasks completed, meetings attended, or issues resolved during this day..."
+                  <Input
+                    type="text"
+                    placeholder="e.g. Groceries, Uber to work, Monthly internet bill..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
-                    className="w-full bg-white border border-[#e4e4e7] focus:outline-none focus:border-[#1e1e1e] font-medium text-sm px-4 py-3 rounded-xl leading-relaxed resize-none transition-colors"
+                    className="bg-white border-[#e4e4e7] focus:border-[#1e1e1e] font-bold text-base px-4 py-6 rounded-xl w-full"
                   />
                 </div>
 
                 <div className="flex justify-end pt-2">
                   <button
                     type="submit"
-                    disabled={
-                      saving || !projectTitle.trim() || !description.trim()
-                    }
+                    disabled={saving || !description.trim() || amount === ""}
                     className="px-8 py-3.5 rounded-xl bg-[#1e1e1e] hover:bg-[#2c2c2c] disabled:opacity-40 text-white font-extrabold text-sm flex items-center gap-2 shadow-sm transition-all cursor-pointer"
                   >
-                    {saving ? "Saving..." : "+ Save Timesheet"}
+                    {saving ? "Saving..." : "+ Save Expense"}
                   </button>
                 </div>
               </form>
@@ -458,35 +515,48 @@ export default function TimesheetPage() {
               {/* Existing Entries List for Selected Date */}
               {selectedDateEntries.length > 0 && (
                 <div className="space-y-4">
-                  <h3 className="text-sm font-black uppercase tracking-wider text-[#71717a]">
-                    Logged Activities ({selectedDateEntries.length})
-                  </h3>
+                  <div className="flex items-center justify-between border-b border-[#e4e4e7] pb-2">
+                    <h3 className="text-sm font-black uppercase tracking-wider text-[#71717a]">
+                      Logged Expenses ({selectedDateEntries.length})
+                    </h3>
+                    <div className="text-sm font-black text-rose-600">
+                      Total:{" "}
+                      {formatCurrency(
+                        selectedDateEntries.reduce(
+                          (acc, curr) => acc + curr.amount,
+                          0,
+                        ),
+                      )}
+                    </div>
+                  </div>
 
                   <div className="space-y-3">
                     {selectedDateEntries.map((entry) => (
                       <div
                         key={entry._id}
-                        className="p-5 rounded-2xl bg-white border border-[#e4e4e7] hover:border-[#1e1e1e] shadow-2xs transition-all space-y-3 relative group"
+                        className="p-5 rounded-2xl bg-white border border-[#e4e4e7] hover:border-[#1e1e1e] shadow-2xs transition-all flex items-center justify-between group"
                       >
-                        <div className="flex items-start justify-between gap-4">
+                        <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-2.5 flex-wrap">
-                            <Badge className="bg-blue-50 text-blue-800 border-blue-200 font-extrabold text-xs px-3 py-1">
-                              {entry.projectTitle}
+                            <Badge className="bg-rose-50 text-rose-800 border-rose-200 font-extrabold text-xs px-3 py-1">
+                              {entry.category}
                             </Badge>
+                            <span className="text-lg font-black text-[#1e1e1e]">
+                              {formatCurrency(entry.amount)}
+                            </span>
                           </div>
-
-                          <button
-                            onClick={() => handleDeleteEntry(entry._id)}
-                            className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
-                            title="Delete entry"
-                          >
-                            Delete
-                          </button>
+                          <p className="text-sm font-medium text-[#71717a]">
+                            {entry.description}
+                          </p>
                         </div>
 
-                        <p className="text-sm font-medium text-[#1e1e1e] whitespace-pre-wrap leading-relaxed">
-                          {entry.description}
-                        </p>
+                        <button
+                          onClick={() => handleDeleteEntry(entry._id)}
+                          className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                          title="Delete entry"
+                        >
+                          Delete
+                        </button>
                       </div>
                     ))}
                   </div>

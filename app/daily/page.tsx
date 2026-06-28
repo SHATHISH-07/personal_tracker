@@ -243,10 +243,6 @@ export default function DailyRecordPage() {
             <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
               Daily Plan Records
             </h1>
-            <p className="text-sm text-[#71717a] mt-1">
-              Select your active roadmap (weekly or monthly) and date to log
-              study hours, select topics, and review daily progress.
-            </p>
           </div>
 
           <div className="pt-6 border-t border-[#e4e4e7] grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -264,7 +260,11 @@ export default function DailyRecordPage() {
                   <option value="">No Roadmaps Found</option>
                 ) : (
                   activePlans.map((p) => (
-                    <option key={p._id} value={p._id} className="bg-white text-black font-semibold">
+                    <option
+                      key={p._id}
+                      value={p._id}
+                      className="bg-white text-black font-semibold"
+                    >
                       {p.title}
                     </option>
                   ))
@@ -399,30 +399,37 @@ export default function DailyRecordPage() {
                       No topics configured in{" "}
                       {currentPlan?.title || "this plan"}.
                     </p>
+                  ) : currentPlan.topics.filter((t) => !t.completed).length ===
+                    0 ? (
+                    <p className="text-xs text-[#71717a] italic p-4 bg-[#f4f4f5] rounded-xl border border-[#e4e4e7]">
+                      All topics in this plan are completed! 🎉
+                    </p>
                   ) : (
                     <div className="flex flex-wrap gap-2.5 p-4 bg-[#f4f4f5] rounded-xl border border-[#e4e4e7]">
-                      {currentPlan.topics.map((t, idx) => {
-                        const isSelected = selectedTopicsCovered.includes(
-                          t.name,
-                        );
-                        return (
-                          <button
-                            type="button"
-                            key={idx}
-                            onClick={() => toggleTopic(t.name)}
-                            className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer select-none flex items-center gap-2.5 ${
-                              isSelected
-                                ? "bg-black text-white border-black shadow-md scale-[1.02]"
-                                : "bg-white text-[#52525b] border-[#e4e4e7] hover:border-black hover:text-black shadow-2xs"
-                            }`}
-                          >
-                            <span
-                              className={`w-2 h-2 rounded-full shrink-0 ${isSelected ? "bg-white" : "bg-[#d4d4d8]"}`}
-                            />
-                            <span>{t.name}</span>
-                          </button>
-                        );
-                      })}
+                      {currentPlan.topics
+                        .filter((t) => !t.completed)
+                        .map((t, idx) => {
+                          const isSelected = selectedTopicsCovered.includes(
+                            t.name,
+                          );
+                          return (
+                            <button
+                              type="button"
+                              key={idx}
+                              onClick={() => toggleTopic(t.name)}
+                              className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer select-none flex items-center gap-2.5 ${
+                                isSelected
+                                  ? "bg-[#272727] text-white border-black shadow-md scale-[1.02]"
+                                  : "bg-white text-[#52525b] border-[#e4e4e7] hover:border-black hover:text-black shadow-2xs"
+                              }`}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full shrink-0 ${isSelected ? "bg-white" : "bg-[#d4d4d8]"}`}
+                              />
+                              <span>{t.name}</span>
+                            </button>
+                          );
+                        })}
                     </div>
                   )}
                 </div>
@@ -445,7 +452,7 @@ export default function DailyRecordPage() {
                 <button
                   type="submit"
                   disabled={submitting || !description.trim()}
-                  className="w-full py-4 rounded-xl bg-black hover:bg-[#27272a] text-white font-extrabold text-sm shadow-lg transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-4 rounded-xl bg-[#272727] hover:bg-[#27272a] text-white font-extrabold text-sm shadow-lg transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>
                     {submitting
@@ -494,7 +501,7 @@ export default function DailyRecordPage() {
                       {/* Top Time & Action Buttons */}
                       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#f4f4f5] pb-3">
                         <div className="flex items-center gap-3 font-mono font-bold text-xs text-black">
-                          <span className="px-3 py-1.5 bg-black text-white rounded-lg">
+                          <span className="px-3 py-1.5 bg-[#272727] text-white rounded-lg">
                             {sess.startTime} - {sess.endTime}
                           </span>
                           <span className="text-black font-extrabold text-sm">
@@ -530,7 +537,7 @@ export default function DailyRecordPage() {
                             {sess.topicsCovered.map((tName, tI) => (
                               <span
                                 key={tI}
-                                className="px-3 py-1 bg-black text-white rounded-lg text-xs font-bold shadow-2xs"
+                                className="px-3 py-1 bg-[#272727] text-white rounded-lg text-xs font-bold shadow-2xs"
                               >
                                 {tName}
                               </span>

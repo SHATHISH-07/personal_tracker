@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Kanban,
   CalendarCheck2,
-  BarChart3,
   LogOut,
   Goal,
   ChevronDown,
@@ -15,6 +14,7 @@ import {
   Plus,
   Clock8,
   PanelRight,
+  IndianRupee,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -50,7 +50,7 @@ export default function Navbar() {
       ],
     },
     { name: "Timesheet", href: "/timesheet", icon: Clock8 },
-    { name: "Analytical Page", href: "/analytics", icon: BarChart3 },
+    { name: "Expense Tracker", href: "/expenses", icon: IndianRupee },
   ];
 
   return (
@@ -109,7 +109,7 @@ export default function Navbar() {
                 title={isCollapsed ? item.name : undefined}
                 className={`flex items-center gap-3.5 rounded-md font-medium text-sm transition-all cursor-pointer ${
                   isSectionActive
-                    ? "bg-black text-white font-semibold shadow-xs"
+                    ? "bg-[#272727] text-white font-semibold shadow-xs"
                     : "text-[#71717a] hover:bg-[#f4f4f5] hover:text-black"
                 } ${
                   isCollapsed

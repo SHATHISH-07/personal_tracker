@@ -446,7 +446,7 @@ export default function ExpensesPage() {
           onClick={() => setSelectedDateStr(null)}
         >
           <div
-            className="bg-white border border-[#e4e4e7] rounded-t-3xl sm:rounded-3xl max-w-4xl w-full max-h-[calc(100dvh-2rem)] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-300 ease-out"
+            className="bg-white border border-[#e4e4e7] rounded-t-3xl sm:rounded-3xl max-w-4xl w-full max-h-[calc(100dvh-2rem)] flex flex-col shadow-2xl overflow-hidden animate-modal"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

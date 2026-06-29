@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+import LogoImage from "../resources/icon.png";
 import {
   LayoutDashboard,
   Kanban,
@@ -178,9 +180,18 @@ export default function Navbar() {
     <>
       {/* --- MOBILE VIEW: HEADER BAR & MENU TOGGLE --- */}
       <div className="md:hidden flex items-center justify-between w-full h-16 px-4 bg-white border-b border-[#e4e4e7] sticky top-0 z-30 font-sans">
-        <span className="font-bold text-black text-base tracking-tight">
-          Personal Tracker
-        </span>
+        <div className="flex items-center gap-2.5">
+          <Image
+            src={LogoImage}
+            alt="Logo"
+            width={24}
+            height={24}
+            className="w-6 h-6 object-contain"
+          />
+          <span className="font-bold text-black text-base tracking-tight">
+            Personal Tracker
+          </span>
+        </div>
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
           className="p-2 rounded-md bg-[#f4f4f5] border border-[#e4e4e7] text-[#71717a] hover:text-black transition-colors"
@@ -209,9 +220,18 @@ export default function Navbar() {
         }`}
       >
         <div className="h-16 border-b border-[#e4e4e7] flex items-center justify-between px-5">
-          <span className="font-bold text-black text-base tracking-tight">
-            Personal Tracker
-          </span>
+          <div className="flex items-center gap-2.5">
+            <Image
+              src={LogoImage}
+              alt="Logo"
+              width={24}
+              height={24}
+              className="w-6 h-6 object-contain"
+            />
+            <span className="font-bold text-black text-base tracking-tight">
+              Personal Tracker
+            </span>
+          </div>
           <button
             onClick={() => setIsMobileOpen(false)}
             className="p-2 rounded-md bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]"
@@ -238,7 +258,7 @@ export default function Navbar() {
 
       {/* --- DESKTOP VIEW: STANDARD COLLAPSIBLE SIDEBAR --- */}
       <aside
-        className={`hidden md:flex flex-col shrink-0 h-screen sticky top-0 select-none z-20 font-sans transition-all duration-300 ease-in-out bg-white border-r border-[#e4e4e7] ${
+        className={`hidden md:flex flex-col shrink-0 h-screen sticky top-0 select-none z-20 font-sans transition-all duration-300 ease-in-out bg-white border-r border-[#e4e4e7] group ${
           isCollapsed ? "w-15" : "w-68"
         }`}
       >
@@ -248,20 +268,50 @@ export default function Navbar() {
             isCollapsed ? "justify-center px-0" : "justify-between px-5"
           }`}
         >
-          {!isCollapsed && (
-            <div className="flex items-center gap-3 overflow-hidden">
-              <span className="font-bold text-black text-base tracking-tight truncate">
-                Personal Tracker
-              </span>
-            </div>
+          {isCollapsed ? (
+            <>
+              {/* Show logo by default when collapsed */}
+              <div className="flex group-hover:hidden items-center justify-center animate-in fade-in zoom-in-95 duration-200">
+                <Image
+                  src={LogoImage}
+                  alt="Logo"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 object-contain"
+                />
+              </div>
+              {/* Show menu button on hover */}
+              <button
+                onClick={() => setIsCollapsed(false)}
+                title="Expand sidebar"
+                className="hidden group-hover:flex p-2 rounded-md bg-[#f4f4f5] hover:bg-[#e4e4e7] text-[#71717a] hover:text-black transition-colors cursor-pointer border border-[#e4e4e7] items-center justify-center animate-in fade-in zoom-in-95 duration-200"
+              >
+                <PanelRight width={17} height={17} />
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center gap-2.5 overflow-hidden">
+                <Image
+                  src={LogoImage}
+                  alt="Logo"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 object-contain shrink-0"
+                />
+                <span className="font-bold text-black text-base tracking-tight truncate">
+                  Personal Tracker
+                </span>
+              </div>
+              <button
+                onClick={() => setIsCollapsed(true)}
+                title="Collapse sidebar"
+                className="p-2 rounded-md bg-[#f4f4f5] hover:bg-[#e4e4e7] text-[#71717a] hover:text-black transition-colors cursor-pointer border border-[#e4e4e7] flex items-center justify-center"
+              >
+                <PanelRight width={17} height={17} />
+              </button>
+            </>
           )}
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-            className="p-2 rounded-md bg-[#f4f4f5] hover:bg-[#e4e4e7] text-[#71717a] hover:text-black transition-colors cursor-pointer border border-[#e4e4e7] flex items-center justify-center"
-          >
-            <PanelRight width={17} height={17} />
-          </button>
         </div>
 
         {/* Desktop Navigation Links */}

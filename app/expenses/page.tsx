@@ -442,11 +442,11 @@ export default function ExpensesPage() {
       {/* Modal Dialog for Expense Logging & Details */}
       {selectedDateStr && (
         <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs sm:p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs sm:p-4 animate-in fade-in duration-300"
           onClick={() => setSelectedDateStr(null)}
         >
           <div
-            className="bg-white border border-[#e4e4e7] rounded-t-3xl sm:rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 sm:zoom-in-95 duration-200"
+            className="bg-white border border-[#e4e4e7] rounded-t-3xl sm:rounded-3xl max-w-4xl w-full max-h-[calc(100dvh-2rem)] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

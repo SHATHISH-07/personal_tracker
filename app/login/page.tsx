@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, User, ArrowRight, AlertCircle, ShieldAlert } from "lucide-react";
+import { Lock, User, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("Shathish Kumaran");
@@ -43,9 +43,6 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white border border-[#e4e4e7] p-6 sm:p-8 rounded-xl shadow-xs transition-all duration-200">
         {/* Hub Title Identity */}
         <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
-          <div className="bg-[#f4f4f5] p-2.5 rounded-xl mb-3 border border-[#e4e4e7]">
-            <ShieldAlert className="w-5 h-5 text-black" />
-          </div>
           <h1 className="text-xl sm:text-2xl font-black tracking-tight text-black">
             Personal Tracker
           </h1>

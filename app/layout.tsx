@@ -28,9 +28,10 @@ export default function RootLayout({
       lang="en"
       className={`${fontSans.variable} ${fontMono.variable} h-screen overflow-hidden antialiased`}
     >
-      <body className="h-screen overflow-hidden bg-[#f4f4f5] text-[#0a0a0a] font-sans flex selection:bg-[#1e1e1e] selection:text-white">
+      <body className="h-screen overflow-hidden bg-[#f4f4f5] text-[#0a0a0a] font-sans flex flex-col md:flex-row selection:bg-[#1e1e1e] selection:text-white">
         <Navbar />
-        <main className="flex-1 h-full min-w-0 overflow-y-auto p-6 md:p-10">
+        {/* Changed padding: full-width on mobile (px-0 py-6), padded on desktop (md:p-10) */}
+        <main className="flex-1 h-full min-w-0 overflow-y-auto px-0 py-6 md:p-10">
           {children}
         </main>
       </body>

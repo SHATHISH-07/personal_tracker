@@ -6,7 +6,7 @@ export async function POST(request: Request) {
 
     if (username === "Shathish Kumaran" && password === "Shathish@07") {
       const response = NextResponse.json({ success: true, message: "Logged in successfully" });
-      
+
       // Set HttpOnly cookie valid for 30 days
       response.cookies.set("auth_token", "shathish_logged_in", {
         httpOnly: true,
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: false, message: "Invalid username or password" }, { status: 401 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ success: false, message: "Server error" }, { status: 500 });
   }
 }

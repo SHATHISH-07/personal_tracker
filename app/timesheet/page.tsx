@@ -225,88 +225,95 @@ export default function TimesheetPage() {
   };
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 space-y-4 pb-12 font-sans">
-      {/* Header */}
-      <div className="bg-white border border-[#e4e4e7] px-6 py-4 rounded-xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          <Clock8 className="w-6 h-6 text-[#1e1e1e]" />
-          <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
-            Timesheet
-          </h1>
-          <Badge className="bg-[#f4f4f5] text-[#1e1e1e] border-[#e4e4e7] font-extrabold text-xs px-3 py-1">
+    <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 space-y-4 pb-12 font-sans">
+      {/* Header (Responsive Wrap) */}
+      <div className="bg-white border border-[#e4e4e7] px-4 sm:px-6 py-4 rounded-xl shadow-2xs flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        <div className="flex items-center justify-between xl:justify-start gap-2.5 w-full xl:w-auto">
+          <div className="flex items-center gap-2.5">
+            <Clock8 className="w-5 h-5 sm:w-6 sm:h-6 text-[#1e1e1e]" />
+            <h1 className="text-xl sm:text-2xl font-black text-[#1e1e1e] tracking-tight">
+              Timesheet
+            </h1>
+          </div>
+          <Badge className="bg-[#f4f4f5] text-[#1e1e1e] border-[#e4e4e7] font-extrabold text-xs px-2 sm:px-3 py-1">
             {enteredDaysCount} records
           </Badge>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <button
-            onClick={handleDownloadExcel}
-            className="px-3.5 py-2 rounded-lg bg-white border border-[#e4e4e7] hover:bg-[#f4f4f5] text-[#1e1e1e] font-extrabold text-xs transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
-            title="Export as Excel / CSV"
-          >
-            <Download className="w-3.5 h-3.5" />
-            Export
-          </button>
-          <button
-            onClick={handleToday}
-            className="px-3.5 py-2 rounded-lg bg-[#1e1e1e] hover:bg-[#2c2c2c] text-white font-extrabold text-xs transition-all cursor-pointer shadow-xs"
-          >
-            Today
-          </button>
-          <div className="flex items-center bg-[#f4f4f5] border border-[#e4e4e7] rounded-lg overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-center gap-2 w-full xl:w-auto">
+          {/* Month Navigator - Orders first on mobile */}
+          <div className="flex items-center justify-between bg-[#f4f4f5] border border-[#e4e4e7] rounded-lg overflow-hidden w-full sm:w-auto order-first sm:order-0">
             <button
               onClick={handlePrevMonth}
-              className="p-2 hover:bg-[#1e1e1e] hover:text-white text-[#1e1e1e] transition-colors cursor-pointer"
+              className="p-2.5 hover:bg-[#1e1e1e] hover:text-white text-[#1e1e1e] transition-colors cursor-pointer"
               title="Previous Month"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <span className="px-3 font-black text-xs min-w-[120px] text-center text-[#1e1e1e]">
+            <span className="px-2 sm:px-3 font-black text-xs sm:text-sm min-w-[110px] sm:min-w-[130px] text-center text-[#1e1e1e]">
               {monthNames[month]} {year}
             </span>
             <button
               onClick={handleNextMonth}
-              className="p-2 hover:bg-[#1e1e1e] hover:text-white text-[#1e1e1e] transition-colors cursor-pointer"
+              className="p-2.5 hover:bg-[#1e1e1e] hover:text-white text-[#1e1e1e] transition-colors cursor-pointer"
               title="Next Month"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex w-full sm:w-auto gap-2">
+            <button
+              onClick={handleDownloadExcel}
+              className="flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-lg bg-white border border-[#e4e4e7] hover:bg-[#f4f4f5] text-[#1e1e1e] font-extrabold text-xs transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Export
+            </button>
+            <button
+              onClick={handleToday}
+              className="flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-lg bg-[#1e1e1e] hover:bg-[#2c2c2c] text-white font-extrabold text-xs transition-all cursor-pointer shadow-xs"
+            >
+              Today
             </button>
           </div>
         </div>
       </div>
 
       {/* Calendar Grid View */}
-      <Card className="p-4 md:p-5 bg-white border border-[#e4e4e7] rounded-2xl shadow-2xs overflow-hidden">
+      <Card className="p-3 sm:p-4 md:p-5 bg-white border border-[#e4e4e7] rounded-xl sm:rounded-2xl shadow-2xs overflow-hidden">
         {/* Days of Week Header */}
-        <div className="grid grid-cols-7 gap-2 mb-2">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div
               key={day}
-              className="text-center font-black text-xs uppercase tracking-wider text-[#71717a] py-1"
+              className="text-center font-black text-[10px] sm:text-xs uppercase tracking-wider text-[#71717a] py-1"
             >
-              {day}
+              <span className="hidden sm:inline">{day}</span>
+              <span className="sm:hidden">{day.charAt(0)}</span>
             </div>
           ))}
         </div>
 
         {/* Days Grid */}
         {loading ? (
-          <div className="h-96 flex items-center justify-center">
+          <div className="h-64 sm:h-96 flex items-center justify-center">
             <div className="text-center space-y-3">
               <div className="loading-spinner mx-auto" />
               <p className="text-sm font-bold text-[#71717a]">
-                Loading timesheet records...
+                Loading records...
               </p>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2">
             {calendarCells.map((cell, idx) => {
               if (cell.isEmpty || !cell.dateStr) {
                 return (
                   <div
                     key={idx}
-                    className="min-h-[140px] p-2 rounded-xl bg-[#fafafa]/30 border border-[#f4f4f5] opacity-20 pointer-events-none"
+                    className="min-h-[70px] sm:min-h-[100px] lg:min-h-[140px] p-1 sm:p-2 rounded-lg sm:rounded-xl bg-[#fafafa]/30 border border-[#f4f4f5] opacity-20 pointer-events-none"
                   />
                 );
               }
@@ -320,9 +327,9 @@ export default function TimesheetPage() {
                 <div
                   key={idx}
                   onClick={() => cell.dateStr && handleDayClick(cell.dateStr)}
-                  className={`min-h-[140px] p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between group ${
+                  className={`min-h-[70px] sm:min-h-[100px] lg:min-h-[140px] p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex flex-col group ${
                     isSelected
-                      ? "bg-[#1e1e1e]/10 border-[#1e1e1e] ring-2 ring-[#1e1e1e] shadow-md"
+                      ? "bg-[#1e1e1e]/10 border-[#1e1e1e] ring-2 ring-[#1e1e1e] shadow-md z-10"
                       : !cell.isCurrentMonth
                         ? "bg-[#fafafa] border-[#f4f4f5] opacity-60 hover:opacity-90"
                         : isToday
@@ -333,9 +340,9 @@ export default function TimesheetPage() {
                   }`}
                 >
                   {/* Top Bar: Day Number & Indicator */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col xl:flex-row items-center xl:items-start justify-between gap-1 xl:gap-0">
                     <span
-                      className={`text-sm font-black w-7 h-7 rounded-full flex items-center justify-center transition-colors ${
+                      className={`text-xs sm:text-sm font-black w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-colors ${
                         isSelected || isToday
                           ? "bg-[#1e1e1e] text-white"
                           : cell.isCurrentMonth
@@ -347,16 +354,21 @@ export default function TimesheetPage() {
                     </span>
 
                     {hasLogs && (
-                      <span className="flex items-center gap-1 text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full shadow-2xs">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        {dayEntries.length} log
-                        {dayEntries.length > 1 ? "s" : ""}
-                      </span>
+                      <>
+                        {/* Desktop Badge */}
+                        <span className="hidden xl:flex items-center gap-1 text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full shadow-2xs">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                          {dayEntries.length} log
+                          {dayEntries.length > 1 ? "s" : ""}
+                        </span>
+                        {/* Mobile/Tablet Dot Indicator */}
+                        <span className="flex xl:hidden w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 shadow-sm mt-0.5 xl:mt-0" />
+                      </>
                     )}
                   </div>
 
-                  {/* Middle / Bottom: Log Snippets */}
-                  <div className="mt-2 space-y-1 overflow-hidden flex-1">
+                  {/* Middle / Bottom: Log Snippets (Hidden on mobile) */}
+                  <div className="mt-2 space-y-1 overflow-hidden flex-1 hidden md:block">
                     {dayEntries.slice(0, 3).map((entry) => (
                       <div
                         key={entry._id}
@@ -381,68 +393,68 @@ export default function TimesheetPage() {
 
       {/* Interactive Log Modal */}
       {selectedDateStr && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs sm:p-4 animate-in fade-in duration-200">
           <div
-            className="bg-white border border-[#e4e4e7] rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+            className="bg-white border border-[#e4e4e7] rounded-t-3xl sm:rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 sm:zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-6 md:p-8 bg-[#f4f4f5] border-b border-[#e4e4e7] flex items-center justify-between">
-              <div className="flex items-center gap-3 flex-wrap">
-                <Badge className="bg-[#1e1e1e] text-white border-[#1e1e1e] font-mono text-xs px-3 py-1.5 shadow-xs">
+            <div className="p-4 sm:p-6 md:p-8 bg-[#f4f4f5] border-b border-[#e4e4e7] flex items-center justify-between sticky top-0 z-10">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                <Badge className="bg-[#1e1e1e] text-white border-[#1e1e1e] font-mono text-[10px] sm:text-xs px-2.5 py-1 shadow-xs w-fit">
                   {selectedDateStr}
                 </Badge>
-                <h2 className="text-2xl md:text-3xl font-black text-[#1e1e1e]">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1e1e1e]">
                   {formatReadableDate(selectedDateStr)}
                 </h2>
               </div>
               <button
                 onClick={() => setSelectedDateStr(null)}
-                className="w-9 h-9 rounded-full bg-white border border-[#e4e4e7] hover:bg-[#1e1e1e] hover:text-white transition-colors cursor-pointer text-[#1e1e1e] font-black text-lg flex items-center justify-center shrink-0"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white border border-[#e4e4e7] hover:bg-[#1e1e1e] hover:text-white transition-colors cursor-pointer text-[#1e1e1e] font-black text-base sm:text-lg flex items-center justify-center shrink-0 self-start sm:self-auto"
               >
                 ✕
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 md:p-8 overflow-y-auto space-y-8 flex-1">
+            <div className="p-4 sm:p-6 md:p-8 overflow-y-auto space-y-6 sm:space-y-8 flex-1">
               {/* Form to Add New Work Log */}
               <form
                 onSubmit={handleSaveEntry}
-                className="bg-[#f4f4f5]/70 p-6 md:p-8 rounded-2xl border border-[#e4e4e7] space-y-6 shadow-2xs"
+                className="bg-[#f4f4f5]/70 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border border-[#e4e4e7] space-y-4 sm:space-y-6 shadow-2xs"
               >
-                <div className="flex items-center justify-end border-b border-[#e4e4e7] pb-3">
-                  <span className="text-xs font-bold text-[#71717a]">
+                <div className="flex items-center justify-between sm:justify-end border-b border-[#e4e4e7] pb-3">
+                  <span className="text-[10px] sm:text-xs font-bold text-[#71717a] uppercase sm:normal-case">
                     Logging for {formatReadableDate(selectedDateStr)}
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
+                  <label className="text-[10px] sm:text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
                     Project Title <span className="text-red-500">*</span>
                   </label>
                   <Input
                     type="text"
-                    placeholder="e.g. Client Portal Redesign, Backend Sprint Tasks..."
+                    placeholder="e.g. Client Portal Redesign..."
                     value={projectTitle}
                     onChange={(e) => setProjectTitle(e.target.value)}
                     required
-                    className="bg-white border-[#e4e4e7] focus:border-[#1e1e1e] font-bold text-base px-4 py-6 rounded-xl w-full"
+                    className="bg-white border-[#e4e4e7] focus:border-[#1e1e1e] font-bold text-sm sm:text-base px-3 sm:px-4 py-5 sm:py-6 rounded-lg sm:rounded-xl w-full"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
+                  <label className="text-[10px] sm:text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
                     Detailed Work Description{" "}
                     <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    rows={7}
-                    placeholder="Describe specific achievements, tasks completed, meetings attended, or issues resolved during this day..."
+                    rows={5}
+                    placeholder="Describe specific achievements or tasks completed..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
-                    className="w-full bg-white border border-[#e4e4e7] focus:outline-none focus:border-[#1e1e1e] font-medium text-sm px-4 py-3 rounded-xl leading-relaxed resize-none transition-colors"
+                    className="w-full bg-white border border-[#e4e4e7] focus:outline-none focus:border-[#1e1e1e] font-medium text-xs sm:text-sm px-3 sm:px-4 py-3 rounded-lg sm:rounded-xl leading-relaxed resize-none transition-colors"
                   />
                 </div>
 
@@ -452,7 +464,7 @@ export default function TimesheetPage() {
                     disabled={
                       saving || !projectTitle.trim() || !description.trim()
                     }
-                    className="px-8 py-3.5 rounded-xl bg-[#1e1e1e] hover:bg-[#2c2c2c] disabled:opacity-40 text-white font-extrabold text-sm flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-lg sm:rounded-xl bg-[#1e1e1e] hover:bg-[#2c2c2c] disabled:opacity-40 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
                   >
                     {saving ? "Saving..." : "+ Save Timesheet"}
                   </button>
@@ -461,8 +473,8 @@ export default function TimesheetPage() {
 
               {/* Existing Entries List for Selected Date */}
               {selectedDateEntries.length > 0 && (
-                <div className="space-y-4">
-                  <h3 className="text-sm font-black uppercase tracking-wider text-[#71717a]">
+                <div className="space-y-3 sm:space-y-4">
+                  <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#71717a]">
                     Logged Activities ({selectedDateEntries.length})
                   </h3>
 
@@ -470,25 +482,25 @@ export default function TimesheetPage() {
                     {selectedDateEntries.map((entry) => (
                       <div
                         key={entry._id}
-                        className="p-5 rounded-2xl bg-white border border-[#e4e4e7] hover:border-[#1e1e1e] shadow-2xs transition-all space-y-3 relative group"
+                        className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-[#e4e4e7] hover:border-[#1e1e1e] shadow-2xs transition-all space-y-3 relative group"
                       >
-                        <div className="flex items-start justify-between gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
                           <div className="flex items-center gap-2.5 flex-wrap">
-                            <Badge className="bg-blue-50 text-blue-800 border-blue-200 font-extrabold text-xs px-3 py-1">
+                            <Badge className="bg-blue-50 text-blue-800 border-blue-200 font-extrabold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1">
                               {entry.projectTitle}
                             </Badge>
                           </div>
 
                           <button
                             onClick={() => handleDeleteEntry(entry._id)}
-                            className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                            className="self-end sm:self-auto px-2.5 py-1 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                             title="Delete entry"
                           >
                             Delete
                           </button>
                         </div>
 
-                        <p className="text-sm font-medium text-[#1e1e1e] whitespace-pre-wrap leading-relaxed">
+                        <p className="text-xs sm:text-sm font-medium text-[#1e1e1e] whitespace-pre-wrap leading-relaxed">
                           {entry.description}
                         </p>
                       </div>

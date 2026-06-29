@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select } from "@/components/ui/select";
 import { Plus, Trash2, Goal, Layers, CheckCircle2 } from "lucide-react";
 
 interface TopicItem {
@@ -93,45 +92,46 @@ export default function CreatePlanPage() {
   const periodLabel = planType === "weekly" ? "Week" : "Month";
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 space-y-4 pb-12 font-sans">
-      <div className="w-full max-w-none space-y-8 animate-in fade-in duration-300">
+    <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 space-y-4 pb-12 font-sans box-border overflow-x-hidden">
+      <div className="w-full space-y-6 sm:space-y-8 animate-in fade-in duration-300">
         {/* Top Header Bar */}
-        <div className="bg-white border border-[#e4e4e7] px-6 py-4 rounded-xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center justify-between w-full">
-            <div>
-              <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
-                Create Upskill Plan
-              </h1>
-              <p className="text-sm text-[#71717a] mt-1">
-                Design your intensive weekly or monthly learning curriculum with
-                detailed goals.
-              </p>
-            </div>
+        <div className="bg-white border border-[#e4e4e7] px-4 sm:px-6 py-4 rounded-xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full min-w-0">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-black text-[#1e1e1e] tracking-tight">
+              Create Upskill Plan
+            </h1>
+            <p className="text-xs sm:text-sm text-[#71717a] mt-1 leading-relaxed">
+              Design your intensive weekly or monthly learning curriculum with
+              detailed goals.
+            </p>
           </div>
         </div>
 
-        <form onSubmit={handleCreatePlan} className="space-y-8">
+        <form
+          onSubmit={handleCreatePlan}
+          className="space-y-6 sm:space-y-8 w-full"
+        >
           {/* Main Plan Overview Card */}
-          <Card className="p-8 bg-white border-[#e4e4e7] shadow-2xs space-y-6 rounded-2xl">
+          <Card className="p-4 sm:p-6 md:p-8 bg-white border-[#e4e4e7] shadow-2xs space-y-6 rounded-2xl w-full min-w-0">
             <div className="border-b border-[#e4e4e7] pb-4">
-              <h2 className="text-lg font-bold text-black flex items-center gap-2">
-                <Goal className="w-5 h-5 text-black" />
+              <h2 className="text-base sm:text-lg font-bold text-black flex items-center gap-2">
+                <Goal className="w-5 h-5 text-black shrink-0" />
                 <span>1. Upskill Plan Overview</span>
               </h2>
             </div>
 
             {/* Plan Type Selector Row */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="block text-sm font-bold text-black">
                 Roadmap Schedule Type <span className="text-red-500">*</span>
               </label>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                 <button
                   type="button"
                   onClick={() => handlePlanTypeChange("monthly")}
-                  className={`py-3.5 px-5 rounded-xl font-extrabold text-sm border transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                  className={`py-3 px-4 rounded-xl font-extrabold text-sm border transition-all cursor-pointer flex items-center justify-center gap-2 w-full ${
                     planType === "monthly"
-                      ? "bg-[#272727] text-white border-black shadow-md scale-[1.01]"
+                      ? "bg-[#272727] text-white border-black shadow-md"
                       : "bg-[#f4f4f5] text-black border-[#e4e4e7] hover:bg-[#e4e4e7]"
                   }`}
                 >
@@ -140,9 +140,9 @@ export default function CreatePlanPage() {
                 <button
                   type="button"
                   onClick={() => handlePlanTypeChange("weekly")}
-                  className={`py-3.5 px-5 rounded-xl font-extrabold text-sm border transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                  className={`py-3 px-4 rounded-xl font-extrabold text-sm border transition-all cursor-pointer flex items-center justify-center gap-2 w-full ${
                     planType === "weekly"
-                      ? "bg-[#272727] text-white border-black shadow-md scale-[1.01]"
+                      ? "bg-[#272727] text-white border-black shadow-md"
                       : "bg-[#f4f4f5] text-black border-[#e4e4e7] hover:bg-[#e4e4e7]"
                   }`}
                 >
@@ -151,8 +151,9 @@ export default function CreatePlanPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-              <div className="md:col-span-2 space-y-2">
+            {/* Title & Duration Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-2 w-full">
+              <div className="md:col-span-2 space-y-2 w-full">
                 <label className="block text-sm font-bold text-black">
                   Plan Title <span className="text-red-500">*</span>
                 </label>
@@ -166,18 +167,18 @@ export default function CreatePlanPage() {
                       ? "e.g. 4-Week Rust Bootcamp"
                       : "e.g. Full Stack & AI Mastery 2026"
                   }
-                  className="bg-white border-[#e4e4e7] text-black text-base py-3 px-4 rounded-lg h-12 font-medium"
+                  className="w-full bg-white border-[#e4e4e7] text-black text-sm sm:text-base py-3 px-4 rounded-lg h-11 sm:h-12 font-medium focus:outline-none"
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <label className="block text-sm font-bold text-black">
                   Total Duration ({planType === "weekly" ? "Weeks" : "Months"})
                 </label>
-                <Select
+                <select
                   value={durationMonths}
                   onChange={(e) => setDurationMonths(e.target.value)}
-                  className="bg-white border-[#e4e4e7] text-black text-base h-12 rounded-lg font-medium"
+                  className="w-full bg-white border-[#e4e4e7] text-black text-sm h-11 sm:h-12 px-3 rounded-lg font-medium focus:outline-none cursor-pointer border shadow-2xs"
                 >
                   {planType === "weekly" ? (
                     <>
@@ -196,12 +197,13 @@ export default function CreatePlanPage() {
                       <option value="12">12 Months Year-Long</option>
                     </>
                   )}
-                </Select>
+                </select>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-black flex items-center justify-between">
+            {/* Description Area */}
+            <div className="space-y-2 w-full">
+              <label className="text-sm font-bold text-black flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span>Detailed Description & Learning Objectives</span>
                 <span className="text-xs font-normal text-[#71717a]">
                   Spacious box for extensive planning
@@ -211,41 +213,39 @@ export default function CreatePlanPage() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder={`Detail what exact skills you will master, specific project deliverables, or milestones you aim to achieve during this ${planType} roadmap...`}
-                rows={8}
-                className="bg-[#fafafa] border-[#e4e4e7] focus:bg-white text-black text-base p-4 rounded-xl leading-relaxed resize-y font-normal transition-all"
+                rows={6}
+                className="w-full bg-[#fafafa] border-[#e4e4e7] focus:bg-white text-black text-sm sm:text-base p-4 rounded-xl leading-relaxed resize-y font-normal transition-all focus:outline-none"
               />
             </div>
           </Card>
 
           {/* Curriculum & Topics Section */}
-          <Card className="p-8 bg-white border-[#e4e4e7] shadow-2xs space-y-6 rounded-2xl">
-            <div className="border-b border-[#e4e4e7] pb-4 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-black flex items-center gap-2">
-                  <Layers className="w-5 h-5 text-black" />
-                  <span>2. Curriculum & Topics</span>
-                </h2>
-              </div>
-              <span className="bg-[#f4f4f5] border border-[#e4e4e7] px-3 py-1 rounded-full text-xs font-bold text-black">
+          <Card className="p-4 sm:p-6 md:p-8 bg-white border-[#e4e4e7] shadow-2xs space-y-6 rounded-2xl w-full min-w-0">
+            <div className="border-b border-[#e4e4e7] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-black flex items-center gap-2">
+                <Layers className="w-5 h-5 text-black shrink-0" />
+                <span>2. Curriculum & Topics</span>
+              </h2>
+              <span className="self-start sm:self-auto bg-[#f4f4f5] border border-[#e4e4e7] px-3 py-1 rounded-full text-xs font-bold text-black whitespace-nowrap">
                 {topicsList.length} Topics Added
               </span>
             </div>
 
             {/* Add Topic Input Box */}
-            <div className="bg-[#f4f4f5] p-6 rounded-xl border border-[#e4e4e7] space-y-4">
+            <div className="bg-[#f4f4f5] p-4 sm:p-6 rounded-xl border border-[#e4e4e7] space-y-4 w-full">
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525b]">
                 Add New Curriculum Topic
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 w-full">
+                <div className="w-full">
                   <label className="block text-xs font-bold text-[#52525b] mb-1.5">
                     Target {periodLabel}
                   </label>
-                  <Select
+                  <select
                     value={topicPeriodInput}
                     onChange={(e) => setTopicPeriodInput(e.target.value)}
-                    className="w-full bg-white border-[#e4e4e7] text-black text-sm h-10 font-bold"
+                    className="w-full bg-white border-[#e4e4e7] text-black text-xs sm:text-sm h-10 px-2 rounded-md font-bold focus:outline-none cursor-pointer border shadow-2xs"
                   >
                     {Array.from(
                       { length: parseInt(durationMonths, 10) || 12 },
@@ -255,10 +255,10 @@ export default function CreatePlanPage() {
                         {periodLabel} {m}
                       </option>
                     ))}
-                  </Select>
+                  </select>
                 </div>
 
-                <div className="md:col-span-3">
+                <div className="sm:col-span-3 w-full">
                   <label className="block text-xs font-bold text-[#52525b] mb-1.5">
                     Topic / Module Name
                   </label>
@@ -267,12 +267,12 @@ export default function CreatePlanPage() {
                     value={topicNameInput}
                     onChange={(e) => setTopicNameInput(e.target.value)}
                     placeholder="e.g. Advanced State Machines & Distributed Systems"
-                    className="bg-white border-[#e4e4e7] text-black text-sm h-10"
+                    className="w-full bg-white border-[#e4e4e7] text-black text-xs sm:text-sm h-10 focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="w-full">
                 <label className="block text-xs font-bold text-[#52525b] mb-1.5">
                   Topic Detailed Scope / Description
                 </label>
@@ -287,55 +287,55 @@ export default function CreatePlanPage() {
                   }}
                   placeholder="Explain what specifically will be covered or built in this topic..."
                   rows={3}
-                  className="bg-white border-[#e4e4e7] text-black text-sm p-3 rounded-lg resize-y"
+                  className="w-full bg-white border-[#e4e4e7] text-black text-xs sm:text-sm p-3 rounded-lg resize-y focus:outline-none"
                 />
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex justify-end w-full">
                 <button
                   type="button"
                   onClick={handleAddTopicTag}
-                  className="px-6 py-2.5 rounded-lg bg-[#272727] hover:bg-[#27272a] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all h-10"
+                  className="w-full sm:w-auto px-5 py-2 rounded-lg bg-[#272727] hover:bg-[#27272a] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all h-10"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>Add Topic to Curriculum</span>
+                  <Plus className="w-4 h-4 shrink-0" />
+                  <span>Add Topic</span>
                 </button>
               </div>
             </div>
 
             {/* List of added topics */}
-            <div className="space-y-3">
+            <div className="space-y-3 w-full">
               {topicsList.length === 0 ? (
-                <div className="py-12 text-center bg-[#fafafa] rounded-xl border border-dashed border-[#e4e4e7] text-[#71717a]">
-                  <p className="text-sm font-semibold">
+                <div className="py-10 px-4 text-center bg-[#fafafa] rounded-xl border border-dashed border-[#e4e4e7] text-[#71717a] w-full">
+                  <p className="text-xs sm:text-sm font-semibold">
                     No topics added to the curriculum yet.
                   </p>
-                  <p className="text-xs mt-1">
-                    Use the box above to add your modules{" "}
+                  <p className="text-[11px] sm:text-xs mt-1">
+                    Use the form above to build modules{" "}
                     {planType === "weekly" ? "week by week" : "month by month"}.
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-3">
+                <div className="flex flex-col gap-3 w-full">
                   {topicsList.map((item, idx) => {
                     const displayPeriod =
                       item.periodNumber || item.monthNumber || 1;
                     return (
                       <div
                         key={idx}
-                        className="flex items-start justify-between gap-4 p-4 rounded-xl bg-[#fafafa] border border-[#e4e4e7] text-black transition-all hover:border-[#a1a1aa]"
+                        className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 p-4 rounded-xl bg-[#fafafa] border border-[#e4e4e7] text-black transition-all hover:border-[#a1a1aa] w-full min-w-0"
                       >
-                        <div className="space-y-1 flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="px-2.5 py-1 bg-black text-white rounded-md text-[11px] font-black tracking-wide uppercase">
+                        <div className="space-y-2 flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                            <span className="w-fit px-2.5 py-0.5 sm:py-1 bg-black text-white rounded-md text-[10px] font-black tracking-wide uppercase whitespace-nowrap">
                               {periodLabel} {displayPeriod}
                             </span>
-                            <h4 className="font-bold text-base text-black">
+                            <h4 className="font-bold text-sm sm:text-base text-black truncate">
                               {item.name}
                             </h4>
                           </div>
                           {item.description && (
-                            <p className="text-sm text-[#52525b] mt-1 leading-relaxed">
+                            <p className="text-xs sm:text-sm text-[#52525b] leading-relaxed wrap-break-words">
                               {item.description}
                             </p>
                           )}
@@ -343,7 +343,7 @@ export default function CreatePlanPage() {
                         <button
                           type="button"
                           onClick={() => handleRemoveTopicTag(idx)}
-                          className="p-2 text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                          className="self-end sm:self-auto p-2 text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer shrink-0 border border-transparent sm:border-none"
                           title="Remove topic"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -357,20 +357,20 @@ export default function CreatePlanPage() {
           </Card>
 
           {/* Submit Action Bar */}
-          <div className="flex items-center justify-end gap-4 pt-4">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-4 w-full">
             <button
               type="button"
               onClick={() => router.push("/plans")}
-              className="px-6 py-3 rounded-xl bg-white border border-[#e4e4e7] hover:bg-[#e4e4e7] text-black font-bold text-sm transition-all cursor-pointer shadow-xs"
+              className="px-6 py-3 rounded-xl bg-white border border-[#e4e4e7] hover:bg-[#e4e4e7] text-black font-bold text-sm transition-all cursor-pointer shadow-xs text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting || !title.trim()}
-              className="px-8 py-3 rounded-xl bg-[#272727] hover:bg-[#27272a] text-white font-bold text-sm shadow-md transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              className="px-6 py-3 rounded-xl bg-[#272727] hover:bg-[#27272a] text-white font-bold text-sm shadow-md transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
             >
-              <CheckCircle2 className="w-5 h-5" />
+              <CheckCircle2 className="w-5 h-5 shrink-0" />
               <span>{submitting ? "Creating Plan..." : "Save Plan ➔"}</span>
             </button>
           </div>

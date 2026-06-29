@@ -235,17 +235,17 @@ export default function DailyRecordPage() {
   const totalHoursWorked = (totalMinutesWorked / 60).toFixed(2);
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 space-y-4 pb-12 font-sans">
-      <div className="w-full max-w-none space-y-8 animate-in fade-in duration-300">
+    <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-4 pb-12 font-sans">
+      <div className="w-full max-w-none space-y-6 sm:space-y-8 animate-in fade-in duration-300">
         {/* Top Header Bar */}
-        <div className="bg-white border border-[#e4e4e7] px-6 py-4 rounded-xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="bg-white border border-[#e4e4e7] p-4 sm:p-6 rounded-xl shadow-2xs flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl font-black text-[#1e1e1e] tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-[#1e1e1e] tracking-tight">
               Daily Plan Records
             </h1>
           </div>
 
-          <div className="pt-6 border-t border-[#e4e4e7] grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="pt-4 border-t border-[#e4e4e7] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {/* Roadmap Plan Dropdown */}
             <div className="bg-[#f4f4f5] px-4 py-3 rounded-xl border border-[#e4e4e7] flex flex-col justify-center min-h-[64px]">
               <span className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider mb-1">
@@ -286,7 +286,7 @@ export default function DailyRecordPage() {
             </div>
 
             {/* Total Hours Worked Banner */}
-            <div className="bg-[#f4f4f5] px-4 py-3 rounded-xl border border-[#e4e4e7] flex flex-col justify-center min-h-[64px]">
+            <div className="bg-[#f4f4f5] px-4 py-3 rounded-xl border border-[#e4e4e7] flex flex-col justify-center min-h-[64px] sm:col-span-2 md:col-span-1">
               <span className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider mb-1">
                 Total Hours Recorded
               </span>
@@ -303,7 +303,7 @@ export default function DailyRecordPage() {
         </div>
 
         {activePlans.length === 0 ? (
-          <Card className="p-12 text-center border border-dashed border-[#d4d4d8] bg-white shadow-2xs rounded-2xl w-full">
+          <Card className="p-8 sm:p-12 text-center border border-dashed border-[#d4d4d8] bg-white shadow-2xs rounded-2xl w-full">
             <h3 className="text-lg font-bold text-black mb-2">
               No Active Roadmap Available
             </h3>
@@ -315,10 +315,10 @@ export default function DailyRecordPage() {
         ) : (
           <div className="space-y-8 w-full">
             {/* Daily Task Recorder Card */}
-            <Card className="p-8 bg-white border-[#e4e4e7] shadow-md rounded-2xl space-y-6 w-full">
-              <div className="border-b border-[#e4e4e7] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <Card className="p-5 sm:p-8 bg-white border-[#e4e4e7] shadow-md rounded-2xl space-y-6 w-full">
+              <div className="border-b border-[#e4e4e7] pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-extrabold text-black">
+                  <h2 className="text-lg sm:text-xl font-extrabold text-black">
                     {editingIndex !== null
                       ? `Edit Recorded Entry #${editingIndex + 1}`
                       : "Daily Task Recorder"}
@@ -329,7 +329,7 @@ export default function DailyRecordPage() {
                       : "Enter start time, end time, covered topics, and task details below."}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {editingIndex !== null && (
                     <button
                       type="button"
@@ -339,8 +339,8 @@ export default function DailyRecordPage() {
                       Cancel Edit
                     </button>
                   )}
-                  <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] font-mono text-xs px-3 py-1.5 font-bold">
-                    Selected Plan: {currentPlan?.title}
+                  <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] font-mono text-xs px-3 py-1.5 font-bold truncate max-w-[200px] sm:max-w-xs">
+                    Plan: {currentPlan?.title}
                   </Badge>
                 </div>
               </div>
@@ -351,7 +351,7 @@ export default function DailyRecordPage() {
                   <label className="block text-xs font-bold text-[#52525b] uppercase tracking-wider">
                     Time Bar (Start & End Time)
                   </label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#f4f4f5] p-6 rounded-xl border border-[#e4e4e7] items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 bg-[#f4f4f5] p-4 sm:p-6 rounded-xl border border-[#e4e4e7] sm:items-end">
                     <div>
                       <label className="block text-xs font-bold text-[#52525b] mb-1.5">
                         Start Time
@@ -376,8 +376,8 @@ export default function DailyRecordPage() {
                         className="bg-white border-[#e4e4e7] font-mono font-bold text-base h-12 text-black w-full"
                       />
                     </div>
-                    <div className="flex flex-col justify-end pt-1">
-                      <div className="bg-white border border-[#e4e4e7] px-6 py-3 rounded-xl font-mono font-bold text-sm text-black text-center flex items-center justify-center gap-2 h-12 shadow-2xs">
+                    <div>
+                      <div className="bg-white border border-[#e4e4e7] px-4 sm:px-6 py-3 rounded-xl font-mono font-bold text-sm text-black text-center flex items-center justify-center gap-2 h-12 shadow-2xs w-full">
                         <span className="text-xs text-[#52525b] uppercase tracking-wider font-sans">
                           Duration:
                         </span>
@@ -405,7 +405,7 @@ export default function DailyRecordPage() {
                       All topics in this plan are completed! 🎉
                     </p>
                   ) : (
-                    <div className="flex flex-wrap gap-2.5 p-4 bg-[#f4f4f5] rounded-xl border border-[#e4e4e7]">
+                    <div className="flex flex-wrap gap-2 sm:gap-2.5 p-3 sm:p-4 bg-[#f4f4f5] rounded-xl border border-[#e4e4e7]">
                       {currentPlan.topics
                         .filter((t) => !t.completed)
                         .map((t, idx) => {
@@ -417,16 +417,18 @@ export default function DailyRecordPage() {
                               type="button"
                               key={idx}
                               onClick={() => toggleTopic(t.name)}
-                              className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer select-none flex items-center gap-2.5 ${
+                              className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer select-none flex items-center gap-2 sm:gap-2.5 ${
                                 isSelected
                                   ? "bg-[#272727] text-white border-black shadow-md scale-[1.02]"
                                   : "bg-white text-[#52525b] border-[#e4e4e7] hover:border-black hover:text-black shadow-2xs"
                               }`}
                             >
                               <span
-                                className={`w-2 h-2 rounded-full shrink-0 ${isSelected ? "bg-white" : "bg-[#d4d4d8]"}`}
+                                className={`w-2 h-2 rounded-full shrink-0 ${
+                                  isSelected ? "bg-white" : "bg-[#d4d4d8]"
+                                }`}
                               />
-                              <span>{t.name}</span>
+                              <span className="text-left">{t.name}</span>
                             </button>
                           );
                         })}
@@ -443,16 +445,16 @@ export default function DailyRecordPage() {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Enter thorough notes, tasks completed, code written, or chapters read during this session..."
-                    rows={8}
+                    rows={6}
                     required
-                    className="bg-[#fafafa] border-[#e4e4e7] focus:bg-white text-black text-base p-5 rounded-xl leading-relaxed resize-y font-normal transition-all shadow-2xs w-full"
+                    className="bg-[#fafafa] border-[#e4e4e7] focus:bg-white text-black text-sm sm:text-base p-4 sm:p-5 rounded-xl leading-relaxed resize-y font-normal transition-all shadow-2xs w-full"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting || !description.trim()}
-                  className="w-full py-4 rounded-xl bg-[#272727] hover:bg-[#27272a] text-white font-extrabold text-sm shadow-lg transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3.5 sm:py-4 rounded-xl bg-[#272727] hover:bg-[#27272a] text-white font-extrabold text-sm shadow-lg transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>
                     {submitting
@@ -467,11 +469,11 @@ export default function DailyRecordPage() {
 
             {/* Recorded Sessions List Today */}
             <div className="space-y-4 w-full">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between px-2 gap-2">
-                <h3 className="text-xl font-black text-black tracking-tight">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between px-1 sm:px-2 gap-3">
+                <h3 className="text-lg sm:text-xl font-black text-black tracking-tight">
                   Recorded Entries for {selectedDate}
                 </h3>
-                <Badge className="bg-white border-[#e4e4e7] text-black font-bold text-xs px-3 py-1.5 shadow-2xs self-start sm:self-auto">
+                <Badge className="bg-white border-[#e4e4e7] text-black font-bold text-[10px] sm:text-xs px-3 py-1.5 shadow-2xs w-fit">
                   Total Hours Worked: {totalHoursWorked} hrs (
                   {totalMinutesWorked} mins)
                 </Badge>
@@ -482,7 +484,7 @@ export default function DailyRecordPage() {
                   Loading records...
                 </div>
               ) : !dailyLog.sessions || dailyLog.sessions.length === 0 ? (
-                <Card className="p-8 text-center border border-dashed border-[#d4d4d8] bg-white shadow-2xs rounded-2xl w-full">
+                <Card className="p-6 sm:p-8 text-center border border-dashed border-[#d4d4d8] bg-white shadow-2xs rounded-2xl w-full">
                   <p className="text-sm font-bold text-black mb-1">
                     No tasks recorded today
                   </p>
@@ -496,10 +498,10 @@ export default function DailyRecordPage() {
                   {dailyLog.sessions.map((sess, idx) => (
                     <Card
                       key={idx}
-                      className="p-6 bg-white border-[#e4e4e7] shadow-sm rounded-xl space-y-4 w-full"
+                      className="p-4 sm:p-6 bg-white border-[#e4e4e7] shadow-sm rounded-xl space-y-4 w-full"
                     >
                       {/* Top Time & Action Buttons */}
-                      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#f4f4f5] pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#f4f4f5] pb-3">
                         <div className="flex items-center gap-3 font-mono font-bold text-xs text-black">
                           <span className="px-3 py-1.5 bg-[#272727] text-white rounded-lg">
                             {sess.startTime} - {sess.endTime}
@@ -509,7 +511,7 @@ export default function DailyRecordPage() {
                             {((sess.actualMinutes || 0) / 60).toFixed(2)}h)
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 self-start sm:self-auto">
                           <button
                             type="button"
                             onClick={() => handleEditSession(idx)}
@@ -528,8 +530,8 @@ export default function DailyRecordPage() {
                       </div>
 
                       {/* Prominent Topics Covered Row */}
-                      <div className="bg-[#f4f4f5] p-3.5 rounded-xl border border-[#e4e4e7]">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-2">
+                      <div className="bg-[#f4f4f5] p-3 sm:p-3.5 rounded-xl border border-[#e4e4e7]">
+                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-2">
                           Topics Covered in this Session:
                         </span>
                         {sess.topicsCovered && sess.topicsCovered.length > 0 ? (
@@ -537,7 +539,7 @@ export default function DailyRecordPage() {
                             {sess.topicsCovered.map((tName, tI) => (
                               <span
                                 key={tI}
-                                className="px-3 py-1 bg-[#272727] text-white rounded-lg text-xs font-bold shadow-2xs"
+                                className="px-2.5 sm:px-3 py-1 bg-[#272727] text-white rounded-lg text-[10px] sm:text-xs font-bold shadow-2xs"
                               >
                                 {tName}
                               </span>
@@ -552,10 +554,10 @@ export default function DailyRecordPage() {
 
                       {/* Description */}
                       <div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-1">
+                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-1.5">
                           Session Notes & Description:
                         </span>
-                        <p className="text-sm text-[#27272a] whitespace-pre-wrap leading-relaxed bg-[#fafafa] p-4 rounded-xl border border-[#f4f4f5]">
+                        <p className="text-xs sm:text-sm text-[#27272a] whitespace-pre-wrap leading-relaxed bg-[#fafafa] p-3 sm:p-4 rounded-xl border border-[#f4f4f5]">
                           {sess.description}
                         </p>
                       </div>

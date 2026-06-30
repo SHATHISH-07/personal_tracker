@@ -10,9 +10,16 @@ export interface ExportExcelOptions {
 
 export const exportExcel = async (data: any[], filename: string, options?: ExportExcelOptions) => {
   try {
+    console.log("[DEBUG] Phase 1 - Export Data Length:", data?.length);
+    console.log("[DEBUG] Phase 1 - First Exported Object:", data?.length ? JSON.stringify(data[0]) : "None");
+    console.log("[DEBUG] Phase 1 - Last Exported Object:", data?.length ? JSON.stringify(data[data.length - 1]) : "None");
+
     // Generate the worksheet
     const ws = XLSX.utils.json_to_sheet(data);
-    
+
+    console.log("[DEBUG] Phase 2 - Worksheet generated successfully");
+    console.log("[DEBUG] Phase 2 - Worksheet Range:", ws["!ref"]);
+
     // Apply column formatting if provided
     if (options?.cols) {
       ws["!cols"] = options.cols;
@@ -23,16 +30,32 @@ export const exportExcel = async (data: any[], filename: string, options?: Expor
     const sheetName = options?.sheetName || "Sheet1";
     XLSX.utils.book_append_sheet(wb, ws, sheetName);
 
+    console.log("[DEBUG] Phase 3 - Workbook created successfully");
+
     if (Capacitor.isNativePlatform()) {
       // Android/iOS Capacitor environment
       const base64Data = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
-      
+
+      console.log("[DEBUG] Phase 3 - Base64 Data Length:", base64Data?.length);
+
       // Save file to the device's documents directory
       const result = await Filesystem.writeFile({
         path: filename,
         data: base64Data,
         directory: Directory.Documents,
       });
+
+      console.log("[DEBUG] Phase 4 - Android File URI:", result.uri);
+
+      try {
+        const statResult = await Filesystem.stat({
+          path: filename,
+          directory: Directory.Documents,
+        });
+        console.log("[DEBUG] Phase 4 - File Size on Disk:", statResult.size);
+      } catch (statErr) {
+        console.error("[DEBUG] Phase 4 - Failed to stat file:", statErr);
+      }
 
       // Optionally trigger the native share dialog
       if (Capacitor.getPlatform() === 'android' || Capacitor.getPlatform() === 'ios') {
@@ -41,16 +64,18 @@ export const exportExcel = async (data: any[], filename: string, options?: Expor
             title: filename,
             url: result.uri,
           });
+          console.log("[DEBUG] Phase 4 - Share dialog opened");
         } catch (shareError) {
-          console.error("Error sharing Excel file:", shareError);
+          console.error("[DEBUG] Phase 4 - Error sharing Excel file:", shareError);
         }
       }
     } else {
       // Web browser environment
+      console.log("[DEBUG] Phase 3 - Browser fallback");
       XLSX.writeFile(wb, filename);
     }
   } catch (error) {
-    console.error("Error exporting Excel file:", error);
+    console.error("[DEBUG] Error exporting Excel file:", error);
   }
 };
 

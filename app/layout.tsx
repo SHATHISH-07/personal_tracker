@@ -30,8 +30,8 @@ export default function RootLayout({
     >
       <body className="h-screen overflow-hidden bg-[#f4f4f5] text-[#0a0a0a] font-sans flex flex-col md:flex-row selection:bg-[#1e1e1e] selection:text-white">
         <Navbar />
-        {/* Changed padding: full-width on mobile (px-0 py-6), padded on desktop (md:p-10) */}
-        <main className="flex-1 h-full min-w-0 overflow-y-auto px-0 py-6 md:p-10">
+        {/* Mobile: pt-16 pb-20 to clear fixed headers/footers, Desktop: md:p-10 */}
+        <main className="flex-1 h-full min-w-0 overflow-y-auto px-0 pt-16 pb-20 md:p-10 relative">
           {children}
         </main>
       </body>

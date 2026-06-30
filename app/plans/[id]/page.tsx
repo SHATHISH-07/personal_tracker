@@ -275,11 +275,11 @@ export default function PlanDetailPage() {
               <h1 className="text-xl sm:text-2xl font-black text-[#1e1e1e] tracking-tight truncate">
                 {plan.title}
               </h1>
-              <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] text-[10px] font-bold uppercase shrink-0">
+              <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] text-[0.625rem] font-bold uppercase shrink-0">
                 {plan.planType === "weekly" ? "Weekly" : "Monthly"}
               </Badge>
               <span
-                className={`text-[10px] sm:text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-md border shadow-2xs shrink-0 ${
+                className={`text-[0.625rem] sm:text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-md border shadow-2xs shrink-0 ${
                   plan.status === "completed"
                     ? "bg-emerald-100 text-emerald-800 border-emerald-300"
                     : "bg-blue-100 text-blue-800 border-blue-300 animate-pulse"
@@ -471,7 +471,7 @@ export default function PlanDetailPage() {
               <span className="text-xs font-black text-black block">
                 {completedTopics} / {totalTopics} Completed
               </span>
-              <span className="text-[10px] font-bold text-[#71717a] sm:block">
+              <span className="text-[0.625rem] font-bold text-[#71717a] sm:block">
                 {Math.round(progressPct)}% Mastery
               </span>
             </div>

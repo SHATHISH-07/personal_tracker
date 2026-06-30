@@ -59,7 +59,7 @@ export default function LoginPage() {
         {/* Interactive Authorization Form */}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#71717a]">
+            <label className="block text-[0.625rem] sm:text-xs font-black uppercase tracking-wider text-[#71717a]">
               Username
             </label>
             <div className="relative">
@@ -76,7 +76,7 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#71717a]">
+            <label className="block text-[0.625rem] sm:text-xs font-black uppercase tracking-wider text-[#71717a]">
               Password
             </label>
             <div className="relative">
@@ -113,7 +113,7 @@ export default function LoginPage() {
 
         {/* Footer Device Lock Attribution */}
         <div className="mt-6 pt-4 border-t border-[#f4f4f5] text-center">
-          <p className="text-[11px] font-medium text-[#71717a] leading-relaxed">
+          <p className="text-[0.6875rem] font-medium text-[#71717a] leading-relaxed">
             Protected Executive Hub for{" "}
             <span className="text-black font-black block sm:inline">
               Shathish Kumaran

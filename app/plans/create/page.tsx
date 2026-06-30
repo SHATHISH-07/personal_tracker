@@ -310,7 +310,7 @@ export default function CreatePlanPage() {
                   <p className="text-xs sm:text-sm font-semibold">
                     No topics added to the curriculum yet.
                   </p>
-                  <p className="text-[11px] sm:text-xs mt-1">
+                  <p className="text-[0.6875rem] sm:text-xs mt-1">
                     Use the form above to build modules{" "}
                     {planType === "weekly" ? "week by week" : "month by month"}.
                   </p>
@@ -327,7 +327,7 @@ export default function CreatePlanPage() {
                       >
                         <div className="space-y-2 flex-1 min-w-0">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                            <span className="w-fit px-2.5 py-0.5 sm:py-1 bg-black text-white rounded-md text-[10px] font-black tracking-wide uppercase whitespace-nowrap">
+                            <span className="w-fit px-2.5 py-0.5 sm:py-1 bg-black text-white rounded-md text-[0.625rem] font-black tracking-wide uppercase whitespace-nowrap">
                               {periodLabel} {displayPeriod}
                             </span>
                             <h4 className="font-bold text-sm sm:text-base text-black truncate">

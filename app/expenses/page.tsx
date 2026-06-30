@@ -345,7 +345,7 @@ export default function ExpensesPage() {
               {WEEKDAY_LABELS.map((day) => (
                 <div
                   key={day}
-                  className="text-center font-black text-[10px] sm:text-xs uppercase tracking-wider text-[#71717a] py-1"
+                  className="text-center font-black text-[0.625rem] sm:text-xs uppercase tracking-wider text-[#71717a] py-1"
                 >
                   <span>{day}</span>
                 </div>
@@ -412,7 +412,7 @@ export default function ExpensesPage() {
                       {hasLogs && (
                         <>
                           {/* Desktop Badge */}
-                          <span className="hidden xl:flex items-center text-[10px] font-black bg-rose-50 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-full shadow-2xs truncate max-w-full">
+                          <span className="hidden xl:flex items-center text-[0.625rem] font-black bg-rose-50 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-full shadow-2xs truncate max-w-full">
                             {formatCurrency(dayTotal)}
                           </span>
                           {/* Mobile/Tablet Dot Indicator */}
@@ -426,14 +426,14 @@ export default function ExpensesPage() {
                       {dayEntries.slice(0, 3).map((entry) => (
                         <div
                           key={entry._id}
-                          className="text-[11px] font-bold px-2 py-1 rounded bg-[#f4f4f5] border border-[#e4e4e7] text-[#1e1e1e] truncate flex items-center gap-1.5 group-hover:bg-white transition-colors"
+                          className="text-[0.6875rem] font-bold px-2 py-1 rounded bg-[#f4f4f5] border border-[#e4e4e7] text-[#1e1e1e] truncate flex items-center gap-1.5 group-hover:bg-white transition-colors"
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
                           <span className="truncate">{entry.description}</span>
                         </div>
                       ))}
                       {dayEntries.length > 3 && (
-                        <div className="text-[10px] font-extrabold text-[#71717a] text-center pt-0.5">
+                        <div className="text-[0.625rem] font-extrabold text-[#71717a] text-center pt-0.5">
                           +{dayEntries.length - 3} more
                         </div>
                       )}
@@ -459,7 +459,7 @@ export default function ExpensesPage() {
             {/* Modal Header */}
             <div className="p-4 sm:p-6 md:p-8 bg-[#f4f4f5] border-b border-[#e4e4e7] flex items-center justify-between sticky top-0 z-10">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                <Badge className="bg-[#1e1e1e] text-white border-[#1e1e1e] font-mono text-[10px] sm:text-xs px-2.5 py-1 shadow-xs w-fit">
+                <Badge className="bg-[#1e1e1e] text-white border-[#1e1e1e] font-mono text-[0.625rem] sm:text-xs px-2.5 py-1 shadow-xs w-fit">
                   {selectedDateStr}
                 </Badge>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1e1e1e]">
@@ -483,7 +483,7 @@ export default function ExpensesPage() {
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#71717a] uppercase tracking-wider">
+                    <label className="text-[0.625rem] font-black text-[#71717a] uppercase tracking-wider">
                       Category
                     </label>
                     <select
@@ -501,7 +501,7 @@ export default function ExpensesPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#71717a] uppercase tracking-wider">
+                    <label className="text-[0.625rem] font-black text-[#71717a] uppercase tracking-wider">
                       Amount
                     </label>
                     <div className="relative">
@@ -527,7 +527,7 @@ export default function ExpensesPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-[#71717a] uppercase tracking-wider">
+                  <label className="text-[0.625rem] font-black text-[#71717a] uppercase tracking-wider">
                     Description
                   </label>
                   <Input
@@ -578,7 +578,7 @@ export default function ExpensesPage() {
                       >
                         <div className="min-w-0 flex-1 space-y-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <Badge className="bg-rose-50 text-rose-700 border-rose-100 font-bold text-[10px] px-2 py-0 shadow-none hover:bg-rose-50">
+                            <Badge className="bg-rose-50 text-rose-700 border-rose-100 font-bold text-[0.625rem] px-2 py-0 shadow-none hover:bg-rose-50">
                               {entry.category}
                             </Badge>
                             <span className="text-sm font-black text-[#1e1e1e]">

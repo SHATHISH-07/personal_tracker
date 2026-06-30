@@ -242,7 +242,7 @@ export default function TopicsChecklistPage() {
 
         {/* Main Content Area */}
         {!selectedPlan ? (
-          <Card className="p-8 sm:p-16 text-center border border-dashed border-[#d4d4d8] bg-white shadow-2xs rounded-2xl">
+          <div className="flex flex-col items-center justify-center min-h-[50vh] text-center w-full animate-in fade-in zoom-in-95 duration-300">
             <BookOpen className="w-10 h-10 sm:w-12 sm:h-12 text-[#a1a1aa] mx-auto mb-4" />
             <h3 className="text-lg sm:text-xl font-bold text-black mb-2">
               No Roadmap Selected
@@ -253,13 +253,13 @@ export default function TopicsChecklistPage() {
             </p>
             <button
               onClick={() => router.push("/plans/create")}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black text-white font-extrabold text-sm hover:bg-[#27272a] transition-all cursor-pointer inline-flex justify-center items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black text-white font-extrabold text-sm hover:bg-[#27272a] transition-all cursor-pointer inline-flex justify-center items-center gap-2 shadow-sm"
             >
               <Plus className="w-4 h-4" /> Create New Plan
             </button>
-          </Card>
+          </div>
         ) : topics.length === 0 ? (
-          <Card className="p-8 sm:p-12 text-center border border-dashed border-[#d4d4d8] bg-white shadow-2xs rounded-2xl">
+          <div className="flex flex-col items-center justify-center min-h-[50vh] text-center w-full animate-in fade-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold text-black mb-1">
               No Topics Created Yet
             </h3>
@@ -273,7 +273,7 @@ export default function TopicsChecklistPage() {
             >
               Go to Roadmap
             </button>
-          </Card>
+          </div>
         ) : (
           <div className="space-y-4">
             {topics.map((topic, topicIdx) => {
@@ -336,18 +336,18 @@ export default function TopicsChecklistPage() {
 
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1.5">
-                          <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] px-2 py-0.5 font-bold text-[10px] uppercase tracking-wider">
+                          <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] px-2 py-0.5 font-bold text-[0.625rem] uppercase tracking-wider">
                             {selectedPlan.planType === "weekly"
                               ? "Week"
                               : "Month"}{" "}
                             {topic.periodNumber || topic.monthNumber || 1}
                           </Badge>
                           {topic.completed ? (
-                            <Badge className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 font-extrabold text-[10px] flex items-center gap-1 uppercase tracking-wider">
+                            <Badge className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 font-extrabold text-[0.625rem] flex items-center gap-1 uppercase tracking-wider">
                               <CheckCircle2 className="w-3 h-3" /> Completed
                             </Badge>
                           ) : (
-                            <Badge className="bg-amber-100 text-amber-800 border border-amber-300 px-2 py-0.5 font-extrabold text-[10px] uppercase tracking-wider">
+                            <Badge className="bg-amber-100 text-amber-800 border border-amber-300 px-2 py-0.5 font-extrabold text-[0.625rem] uppercase tracking-wider">
                               In Progress
                             </Badge>
                           )}
@@ -373,7 +373,7 @@ export default function TopicsChecklistPage() {
                               ? "Topic Completed"
                               : "Topic Pending"}
                         </span>
-                        <span className="text-[10px] font-bold text-[#71717a]">
+                        <span className="text-[0.625rem] font-bold text-[#71717a]">
                           {progressPercent}% Mastery
                         </span>
                       </div>
@@ -508,7 +508,7 @@ export default function TopicsChecklistPage() {
 
                                 <div className="flex items-center justify-end gap-3 shrink-0 ml-8 sm:ml-0">
                                   <Badge
-                                    className={`text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${
+                                    className={`text-[0.625rem] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${
                                       item.completed
                                         ? "bg-emerald-100 text-emerald-800 border-emerald-300"
                                         : "bg-[#f4f4f5] text-[#52525b] border-[#e4e4e7]"

@@ -186,7 +186,7 @@ export default function PlansPage() {
                         <h3 className="text-lg sm:text-xl font-extrabold text-black tracking-tight group-hover:underline truncate w-full sm:w-auto">
                           {plan.title}
                         </h3>
-                        <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] text-[10px] font-bold uppercase shrink-0">
+                        <Badge className="bg-[#f4f4f5] text-black border border-[#e4e4e7] text-[0.625rem] font-bold uppercase shrink-0">
                           {plan.planType === "weekly" ? "Weekly" : "Monthly"}
                         </Badge>
                       </div>
@@ -205,7 +205,7 @@ export default function PlansPage() {
                         <span className="inline-flex items-center gap-1.5">
                           Status:{" "}
                           <span
-                            className={`font-extrabold px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider border shadow-2xs ${
+                            className={`font-extrabold px-2 py-0.5 rounded-md text-[0.625rem] uppercase tracking-wider border shadow-2xs ${
                               plan.status === "completed"
                                 ? "bg-emerald-100 text-emerald-800 border-emerald-300"
                                 : "bg-blue-100 text-blue-800 border-blue-300 animate-pulse"

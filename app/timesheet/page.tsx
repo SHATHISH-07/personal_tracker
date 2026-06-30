@@ -291,7 +291,7 @@ export default function TimesheetPage() {
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div
               key={day}
-              className="text-center font-black text-[10px] sm:text-xs uppercase tracking-wider text-[#71717a] py-1"
+              className="text-center font-black text-[0.625rem] sm:text-xs uppercase tracking-wider text-[#71717a] py-1"
             >
               <span className="hidden sm:inline">{day}</span>
               <span className="sm:hidden">{day.charAt(0)}</span>
@@ -359,7 +359,7 @@ export default function TimesheetPage() {
                     {hasLogs && (
                       <>
                         {/* Desktop Badge */}
-                        <span className="hidden xl:flex items-center gap-1 text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full shadow-2xs">
+                        <span className="hidden xl:flex items-center gap-1 text-[0.625rem] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full shadow-2xs">
                           <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                           {dayEntries.length} log
                           {dayEntries.length > 1 ? "s" : ""}
@@ -375,14 +375,14 @@ export default function TimesheetPage() {
                     {dayEntries.slice(0, 3).map((entry) => (
                       <div
                         key={entry._id}
-                        className="text-[11px] font-bold px-2 py-1 rounded bg-[#f4f4f5] border border-[#e4e4e7] text-[#1e1e1e] truncate flex items-center gap-1.5 group-hover:bg-white transition-colors"
+                        className="text-[0.6875rem] font-bold px-2 py-1 rounded bg-[#f4f4f5] border border-[#e4e4e7] text-[#1e1e1e] truncate flex items-center gap-1.5 group-hover:bg-white transition-colors"
                       >
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />
                         <span className="truncate">{entry.projectTitle}</span>
                       </div>
                     ))}
                     {dayEntries.length > 3 && (
-                      <div className="text-[10px] font-extrabold text-[#71717a] text-center pt-0.5">
+                      <div className="text-[0.625rem] font-extrabold text-[#71717a] text-center pt-0.5">
                         +{dayEntries.length - 3} more
                       </div>
                     )}
@@ -407,7 +407,7 @@ export default function TimesheetPage() {
             {/* Modal Header */}
             <div className="p-4 sm:p-6 md:p-8 bg-[#f4f4f5] border-b border-[#e4e4e7] flex items-center justify-between sticky top-0 z-10">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                <Badge className="bg-[#1e1e1e] text-white border-[#1e1e1e] font-mono text-[10px] sm:text-xs px-2.5 py-1 shadow-xs w-fit">
+                <Badge className="bg-[#1e1e1e] text-white border-[#1e1e1e] font-mono text-[0.625rem] sm:text-xs px-2.5 py-1 shadow-xs w-fit">
                   {selectedDateStr}
                 </Badge>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1e1e1e]">
@@ -430,13 +430,13 @@ export default function TimesheetPage() {
                 className="bg-[#f4f4f5]/70 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border border-[#e4e4e7] space-y-4 sm:space-y-6 shadow-2xs"
               >
                 <div className="flex items-center justify-between sm:justify-end border-b border-[#e4e4e7] pb-3">
-                  <span className="text-[10px] sm:text-xs font-bold text-[#71717a] uppercase sm:normal-case">
+                  <span className="text-[0.625rem] sm:text-xs font-bold text-[#71717a] uppercase sm:normal-case">
                     Logging for {formatReadableDate(selectedDateStr)}
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] sm:text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
+                  <label className="text-[0.625rem] sm:text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
                     Project Title <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -450,7 +450,7 @@ export default function TimesheetPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] sm:text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
+                  <label className="text-[0.625rem] sm:text-xs font-bold text-[#1e1e1e] uppercase tracking-wider">
                     Detailed Work Description{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -492,14 +492,14 @@ export default function TimesheetPage() {
                       >
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
                           <div className="flex items-center gap-2.5 flex-wrap">
-                            <Badge className="bg-blue-50 text-blue-800 border-blue-200 font-extrabold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1">
+                            <Badge className="bg-blue-50 text-blue-800 border-blue-200 font-extrabold text-[0.625rem] sm:text-xs px-2.5 sm:px-3 py-1">
                               {entry.projectTitle}
                             </Badge>
                           </div>
 
                           <button
                             onClick={() => handleDeleteEntry(entry._id)}
-                            className="self-end sm:self-auto px-2.5 py-1 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                            className="self-end sm:self-auto px-2.5 py-1 rounded-md sm:rounded-lg text-[0.625rem] sm:text-xs font-bold text-[#a1a1aa] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                             title="Delete entry"
                           >
                             Delete

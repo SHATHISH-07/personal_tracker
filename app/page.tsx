@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import Heatmap from "@/components/Heatmap";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { IndianRupee, Goal } from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -99,7 +100,7 @@ const formatDateKey = (date: Date) =>
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
-  const [dashboardView, setDashboardView] = useState("upskill");
+  const [dashboardView, setDashboardView] = useState("expense");
 
   // Data states
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
@@ -291,8 +292,27 @@ export default function DashboardPage() {
     return <LoadingSpinner message="Loading dashboards..." />;
   }
 
-  const renderUpskillDashboard = () => (
-    <div className="space-y-6 animate-in fade-in duration-300 w-full box-border">
+  const renderUpskillDashboard = () => {
+    const hasUpskillData = analytics && (analytics.totalSessions > 0 || analytics.planStats.active > 0 || analytics.planStats.completed > 0 || analytics.totalHoursLogged > 0);
+
+    if (!hasUpskillData) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] w-full pb-20">
+          <div className="flex flex-col items-center justify-center p-8 sm:p-12 text-center animate-in fade-in zoom-in-95 duration-300 max-w-md w-full">
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-5 border border-[#e4e4e7] shadow-sm">
+              <Goal className="w-8 h-8 text-[#a1a1aa] stroke-2" />
+            </div>
+            <h3 className="text-xl font-black text-[#1e1e1e] tracking-tight">No Upskill Records</h3>
+            <p className="text-[0.875rem] text-[#71717a] mt-2.5 font-medium leading-relaxed">
+              Add upskill records to show analytics and track your learning progress.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6 animate-in fade-in duration-300 w-full box-border mt-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
         <Card className="bg-white shadow-2xs border-[#e4e4e7]">
           <CardHeader className="pb-2">
@@ -437,9 +457,26 @@ export default function DashboardPage() {
         <Heatmap data={analytics?.heatmapData || []} />
       </div>
     </div>
-  );
+    );
+  };
 
   const renderExpenseDashboard = () => {
+    if (!rawExpenses || rawExpenses.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] w-full pb-20">
+          <div className="flex flex-col items-center justify-center p-8 sm:p-12 text-center animate-in fade-in zoom-in-95 duration-300 max-w-md w-full">
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-5 border border-[#e4e4e7] shadow-sm">
+              <IndianRupee className="w-8 h-8 text-[#a1a1aa] stroke-2" />
+            </div>
+            <h3 className="text-xl font-black text-[#1e1e1e] tracking-tight">No Expense Records</h3>
+            <p className="text-[0.875rem] text-[#71717a] mt-2.5 font-medium leading-relaxed">
+              Add expense records to show analytics and track your spending.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     const selectedExpenseYear = expenseMonth.getFullYear();
     const selectedExpenseMonth = expenseMonth.getMonth();
     const formattedMonth = expenses?.periodLabel || String(selectedExpenseYear);
@@ -447,7 +484,7 @@ export default function DashboardPage() {
       expenses?.periodShortLabel || String(selectedExpenseYear);
 
     return (
-      <div className="space-y-6 animate-in fade-in duration-300 w-full box-border">
+      <div className="space-y-6 animate-in fade-in duration-300 w-full box-border mt-4">
         {/* Fixed Filters Bar Container */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-2xs border border-[#e4e4e7] w-full min-w-0">
           <h2 className="text-base sm:text-lg font-bold text-[#1e1e1e]">
@@ -568,7 +605,7 @@ export default function DashboardPage() {
               <div className="text-xl sm:text-2xl font-extrabold truncate">
                 ₹ {expenses?.largestTransaction?.amount.toLocaleString() || 0}
               </div>
-              <div className="text-[11px] text-[#71717a] mt-0.5 truncate">
+              <div className="text-[0.6875rem] text-[#71717a] mt-0.5 truncate">
                 {expenses?.largestTransaction?.category || "N/A"}
               </div>
             </CardContent>
@@ -620,7 +657,7 @@ export default function DashboardPage() {
                 </ResponsiveContainer>
               )}
             </div>
-            <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 mt-3 text-[11px] sm:text-xs font-bold">
+            <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 mt-3 text-[0.6875rem] sm:text-xs font-bold">
               {expenses?.categoryBreakdown.map((entry, index) => (
                 <div key={index} className="flex items-center gap-1.5">
                   <span
@@ -656,7 +693,7 @@ export default function DashboardPage() {
                     >
                       <div className="flex justify-between items-center mb-1.5">
                         <span className="font-bold text-[#1e1e1e] flex items-center gap-2 text-xs sm:text-sm truncate">
-                          <span className="w-5 h-5 rounded-full bg-[#e4e4e7] flex items-center justify-center text-[10px] font-bold shrink-0">
+                          <span className="w-5 h-5 rounded-full bg-[#e4e4e7] flex items-center justify-center text-[0.625rem] font-bold shrink-0">
                             {i + 1}
                           </span>
                           <span className="truncate">{cat.name}</span>
@@ -665,7 +702,7 @@ export default function DashboardPage() {
                           ₹ {cat.total.toLocaleString()}
                         </span>
                       </div>
-                      <div className="flex justify-between text-[11px] text-[#71717a]">
+                      <div className="flex justify-between text-[0.6875rem] text-[#71717a]">
                         <span>Avg per transaction:</span>
                         <span>
                           ₹ {Math.round(cat.avgTransaction).toLocaleString()}

@@ -17,8 +17,6 @@ import {
   Clock8,
   PanelRight,
   IndianRupee,
-  Menu,
-  X,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -26,7 +24,6 @@ export default function Navbar() {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isPlannerOpen, setIsPlannerOpen] = useState(true);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -178,83 +175,70 @@ export default function Navbar() {
 
   return (
     <>
-      {/* --- MOBILE VIEW: HEADER BAR & MENU TOGGLE --- */}
-      <div className="md:hidden flex items-center justify-between w-full h-16 px-4 bg-white border-b border-[#e4e4e7] sticky top-0 z-30 font-sans">
-        <div className="flex items-center gap-2.5">
+      {/* --- MOBILE VIEW: TOP APP BAR --- */}
+      <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-[#e4e4e7] z-50 flex items-center justify-between px-4 font-sans">
+        <div className="flex items-center gap-2.5 overflow-hidden">
           <Image
             src={LogoImage}
             alt="Logo"
-            width={24}
-            height={24}
-            className="w-6 h-6 object-contain"
+            width={32}
+            height={32}
+            className="w-8 h-8 object-contain shrink-0"
           />
-          <span className="font-bold text-black text-base tracking-tight">
+          <span className="font-black text-black text-lg tracking-tight truncate">
             Personal Tracker
           </span>
         </div>
         <button
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-2 rounded-md bg-[#f4f4f5] border border-[#e4e4e7] text-[#71717a] hover:text-black transition-colors"
-          title="Toggle Menu"
+          onClick={handleLogout}
+          title="Sign Out"
+          className="p-1.5 rounded-full bg-[#f4f4f5] hover:bg-[#e4e4e7] text-[#71717a] hover:text-black transition-colors cursor-pointer border border-[#e4e4e7] flex items-center justify-center shrink-0"
         >
-          {isMobileOpen ? (
-            <X width={20} height={20} />
-          ) : (
-            <Menu width={20} height={20} />
-          )}
+          <LogOut className="w-4 h-4" />
         </button>
-      </div>
+      </header>
 
-      {/* MOBILE DRAWER OVERLAY */}
-      {isMobileOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/40 z-40 transition-opacity"
-          onClick={() => setIsMobileOpen(false)}
-        />
-      )}
+      {/* --- MOBILE VIEW: BOTTOM NAVIGATION BAR --- */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-[#e4e4e7] z-50 flex items-center overflow-x-auto flex-nowrap px-1 font-sans pb-safe">
+        {[
+          { name: "Dash", href: "/", icon: LayoutDashboard },
+          { name: "Timesheet", href: "/timesheet", icon: Clock8 },
+          { name: "Expenses", href: "/expenses", icon: IndianRupee },
+          { name: "Plans", href: "/plans-menu", icon: Goal },
+        ].map((item) => {
+          const Icon = item.icon;
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(item.href));
 
-      {/* MOBILE DRAWER SIDEBAR */}
-      <aside
-        className={`md:hidden fixed top-0 left-0 bottom-0 z-50 bg-white w-68 flex flex-col h-full border-r border-[#e4e4e7] font-sans transition-transform duration-300 ease-in-out transform ${
-          isMobileOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="h-16 border-b border-[#e4e4e7] flex items-center justify-between px-5">
-          <div className="flex items-center gap-2.5">
-            <Image
-              src={LogoImage}
-              alt="Logo"
-              width={24}
-              height={24}
-              className="w-6 h-6 object-contain"
-            />
-            <span className="font-bold text-black text-base tracking-tight">
-              Personal Tracker
-            </span>
-          </div>
-          <button
-            onClick={() => setIsMobileOpen(false)}
-            className="p-2 rounded-md bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]"
-          >
-            <X width={17} height={17} />
-          </button>
-        </div>
-        <nav className="flex-1 py-6 px-3 space-y-3 overflow-y-auto">
-          {renderNavLinks(false, () => setIsMobileOpen(false))}
-        </nav>
-        <div className="p-4 border-t border-[#e4e4e7]">
-          <button
-            onClick={() => {
-              setIsMobileOpen(false);
-              handleLogout();
-            }}
-            className="flex items-center gap-2.5 rounded-md text-black text-sm font-semibold py-2.5 px-3.5 w-full transition-colors cursor-pointer"
-          >
-            <LogOut className="w-4 h-4 shrink-0 text-[#71717a]" />
-            <span>Log Out</span>
-          </button>
-        </div>
-      </aside>
+          return (
+            <a
+              key={item.name}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(item.href);
+              }}
+              className={`flex flex-col items-center justify-center min-w-[80px] flex-1 h-full space-y-1 transition-colors ${
+                isActive ? "text-[#1e1e1e]" : "text-[#71717a] hover:text-black"
+              }`}
+            >
+              <Icon
+                className={`w-[22px] h-[22px] ${
+                  isActive ? "stroke-[2.5px]" : "stroke-2"
+                }`}
+              />
+              <span
+                className={`text-[0.625rem] ${
+                  isActive ? "font-bold" : "font-medium"
+                }`}
+              >
+                {item.name}
+              </span>
+            </a>
+          );
+        })}
+      </nav>
 
       {/* --- DESKTOP VIEW: STANDARD COLLAPSIBLE SIDEBAR --- */}
       <aside
@@ -325,7 +309,9 @@ export default function Navbar() {
 
         {/* Desktop Footer */}
         <div
-          className={`p-4 border-t border-[#e4e4e7] ${isCollapsed ? "flex justify-center px-2" : ""}`}
+          className={`p-4 border-t border-[#e4e4e7] ${
+            isCollapsed ? "flex justify-center px-2" : ""
+          }`}
         >
           <button
             onClick={handleLogout}

@@ -189,3 +189,9 @@
     will-change: transform, opacity;
   }
 }
+
+@media (max-width: 768px) {
+  html {
+    font-size: 18px; /* Boost all rem-based sizes on mobile */
+  }
+}

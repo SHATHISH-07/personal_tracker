@@ -248,7 +248,7 @@ export default function DailyRecordPage() {
           <div className="pt-4 border-t border-[#e4e4e7] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {/* Roadmap Plan Dropdown */}
             <div className="bg-[#f4f4f5] px-4 py-3 rounded-xl border border-[#e4e4e7] flex flex-col justify-center min-h-[64px]">
-              <span className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider mb-1">
+              <span className="text-[0.625rem] font-bold text-[#71717a] uppercase tracking-wider mb-1">
                 Select Roadmap Plan
               </span>
               <select
@@ -274,7 +274,7 @@ export default function DailyRecordPage() {
 
             {/* Date Selector */}
             <div className="bg-[#f4f4f5] px-4 py-3 rounded-xl border border-[#e4e4e7] flex flex-col justify-center min-h-[64px]">
-              <span className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider mb-1">
+              <span className="text-[0.625rem] font-bold text-[#71717a] uppercase tracking-wider mb-1">
                 Log Date
               </span>
               <input
@@ -287,7 +287,7 @@ export default function DailyRecordPage() {
 
             {/* Total Hours Worked Banner */}
             <div className="bg-[#f4f4f5] px-4 py-3 rounded-xl border border-[#e4e4e7] flex flex-col justify-center min-h-[64px] sm:col-span-2 md:col-span-1">
-              <span className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider mb-1">
+              <span className="text-[0.625rem] font-bold text-[#71717a] uppercase tracking-wider mb-1">
                 Total Hours Recorded
               </span>
               <div className="flex items-baseline gap-1.5 font-mono">
@@ -473,7 +473,7 @@ export default function DailyRecordPage() {
                 <h3 className="text-lg sm:text-xl font-black text-black tracking-tight">
                   Recorded Entries for {selectedDate}
                 </h3>
-                <Badge className="bg-white border-[#e4e4e7] text-black font-bold text-[10px] sm:text-xs px-3 py-1.5 shadow-2xs w-fit">
+                <Badge className="bg-white border-[#e4e4e7] text-black font-bold text-[0.625rem] sm:text-xs px-3 py-1.5 shadow-2xs w-fit">
                   Total Hours Worked: {totalHoursWorked} hrs (
                   {totalMinutesWorked} mins)
                 </Badge>
@@ -531,7 +531,7 @@ export default function DailyRecordPage() {
 
                       {/* Prominent Topics Covered Row */}
                       <div className="bg-[#f4f4f5] p-3 sm:p-3.5 rounded-xl border border-[#e4e4e7]">
-                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-2">
+                        <span className="text-[0.625rem] sm:text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-2">
                           Topics Covered in this Session:
                         </span>
                         {sess.topicsCovered && sess.topicsCovered.length > 0 ? (
@@ -539,7 +539,7 @@ export default function DailyRecordPage() {
                             {sess.topicsCovered.map((tName, tI) => (
                               <span
                                 key={tI}
-                                className="px-2.5 sm:px-3 py-1 bg-[#272727] text-white rounded-lg text-[10px] sm:text-xs font-bold shadow-2xs"
+                                className="px-2.5 sm:px-3 py-1 bg-[#272727] text-white rounded-lg text-[0.625rem] sm:text-xs font-bold shadow-2xs"
                               >
                                 {tName}
                               </span>
@@ -554,7 +554,7 @@ export default function DailyRecordPage() {
 
                       {/* Description */}
                       <div>
-                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-1.5">
+                        <span className="text-[0.625rem] sm:text-xs font-bold uppercase tracking-wider text-[#52525b] block mb-1.5">
                           Session Notes & Description:
                         </span>
                         <p className="text-xs sm:text-sm text-[#27272a] whitespace-pre-wrap leading-relaxed bg-[#fafafa] p-3 sm:p-4 rounded-xl border border-[#f4f4f5]">

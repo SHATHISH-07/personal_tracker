@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   Download,
 } from "lucide-react";
+import { exportCsv } from "@/lib/exportFile";
 
 interface TimesheetEntry {
   _id: string;
@@ -188,7 +189,7 @@ export default function TimesheetPage() {
     });
   };
 
-  const handleDownloadExcel = () => {
+  const handleDownloadExcel = async () => {
     const header = ["Month", "Date", "Project Title", "Description"];
     const csvRows = [header.join(",")];
 
@@ -214,14 +215,7 @@ export default function TimesheetPage() {
     });
 
     const csvString = csvRows.join("\n");
-    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `timesheet_${monthNames[month]}_${year}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    await exportCsv(csvString, `timesheet_${monthNames[month]}_${year}.csv`);
   };
 
   return (

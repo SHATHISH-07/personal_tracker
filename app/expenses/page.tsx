@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { IndianRupee, Download, X, Plus, Trash2 } from "lucide-react";
-import * as XLSX from "xlsx";
+import { exportExcel } from "@/lib/exportFile";
 
 interface ExpenseEntry {
   _id: string;
@@ -203,7 +203,7 @@ export default function ExpensesPage() {
     }
   };
 
-  const handleDownloadExcel = () => {
+  const handleDownloadExcel = async () => {
     const sortedEntries = [...visibleEntries].sort((a, b) =>
       a.date.localeCompare(b.date),
     );
@@ -230,18 +230,19 @@ export default function ExpensesPage() {
       });
     }
 
-    const ws = XLSX.utils.json_to_sheet(exportData);
-    ws["!cols"] = [
-      { wch: 15 },
-      { wch: 15 },
-      { wch: 25 },
-      { wch: 45 },
-      { wch: 12 },
-    ];
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Expenses");
     const suffix = MONTH_NAMES[month] + "_" + year;
-    XLSX.writeFile(wb, "expenses_" + suffix + ".xlsx");
+    const filename = "expenses_" + suffix + ".xlsx";
+
+    await exportExcel(exportData, filename, {
+      sheetName: "Expenses",
+      cols: [
+        { wch: 15 },
+        { wch: 15 },
+        { wch: 25 },
+        { wch: 45 },
+        { wch: 12 },
+      ]
+    });
   };
 
   const formatReadableDate = (dateStr: string) => {

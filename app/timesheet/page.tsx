@@ -10,8 +10,10 @@ import {
   Clock8,
   CheckCircle2,
   Download,
+  Share2,
 } from "lucide-react";
 import { exportCsv } from "@/lib/exportFile";
+import { Share } from "@capacitor/share";
 
 interface TimesheetEntry {
   _id: string;
@@ -32,6 +34,7 @@ export default function TimesheetPage() {
   const [projectTitle, setProjectTitle] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
+  const [exportSuccessDetails, setExportSuccessDetails] = useState<{ uri: string; filename: string; type: string } | null>(null);
 
   // Helper to format date string YYYY-MM-DD
   const formatDateStr = (d: Date) => {
@@ -215,7 +218,12 @@ export default function TimesheetPage() {
     });
 
     const csvString = csvRows.join("\n");
-    await exportCsv(csvString, `timesheet_${monthNames[month]}_${year}.csv`);
+    const filename = `timesheet_${monthNames[month]}_${year}.csv`;
+    const uri = await exportCsv(csvString, filename);
+
+    if (uri) {
+      setExportSuccessDetails({ uri, filename, type: "CSV" });
+    }
   };
 
   return (
@@ -505,6 +513,50 @@ export default function TimesheetPage() {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Export Success Dialog */}
+      {exportSuccessDetails && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-300">
+          <div className="bg-white border border-[#e4e4e7] rounded-3xl max-w-sm w-full p-6 sm:p-8 flex flex-col shadow-2xl animate-modal text-center items-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+              <Download className="w-6 h-6 text-emerald-600" />
+            </div>
+            <h2 className="text-xl font-black text-[#1e1e1e] mb-2">
+              {exportSuccessDetails.type} exported successfully
+            </h2>
+            <p className="text-sm font-medium text-[#71717a] mb-6">
+              Saved to:<br />
+              <span className="font-bold text-[#1e1e1e]">Documents/{exportSuccessDetails.filename}</span>
+            </p>
+            <div className="flex flex-col sm:flex-row w-full gap-3">
+              <button
+                onClick={() => setExportSuccessDetails(null)}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#f4f4f5] hover:bg-[#e4e4e7] text-[#1e1e1e] font-bold text-sm transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+              <button
+                onClick={async () => {
+                  const details = exportSuccessDetails;
+                  setExportSuccessDetails(null);
+                  try {
+                    await Share.share({
+                      title: details.filename,
+                      url: details.uri,
+                    });
+                  } catch (e) {
+                    console.error("Error sharing file", e);
+                  }
+                }}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#1e1e1e] hover:bg-[#2c2c2c] text-white font-bold text-sm transition-colors cursor-pointer flex items-center justify-center gap-2"
+              >
+                <Share2 className="w-4 h-4" />
+                Share File
+              </button>
             </div>
           </div>
         </div>

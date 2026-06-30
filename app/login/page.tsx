@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, User, ArrowRight, AlertCircle } from "lucide-react";
+import { Lock, User, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -39,8 +40,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f4f5] flex items-center justify-center p-4 sm:p-6 antialiased text-[#1e1e1e] font-sans">
-      <div className="w-full max-w-md bg-white border border-[#e4e4e7] p-6 sm:p-8 rounded-xl shadow-xs transition-all duration-200">
+    <div className="h-dvh overflow-hidden bg-[#f4f4f5] flex items-center justify-center p-4 sm:p-6 antialiased text-[#1e1e1e] font-sans">
+      <div className="w-full max-w-md max-h-full overflow-y-auto bg-white border border-[#e4e4e7] p-6 sm:p-8 rounded-xl shadow-xs transition-all duration-200">
         {/* Hub Title Identity */}
         <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
           <h1 className="text-xl sm:text-2xl font-black tracking-tight text-black">
@@ -82,13 +83,25 @@ export default function LoginPage() {
             <div className="relative">
               <Lock className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full h-11 bg-white border border-[#e4e4e7] rounded-lg pl-10 pr-4 py-2 text-black placeholder-[#a1a1aa] focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-sm font-bold shadow-none"
+                className="w-full h-11 bg-white border border-[#e4e4e7] rounded-lg pl-10 pr-10 py-2 text-black placeholder-[#a1a1aa] focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-sm font-bold shadow-none"
                 placeholder="••••••••••••"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#a1a1aa] hover:text-black transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
             </div>
           </div>
 

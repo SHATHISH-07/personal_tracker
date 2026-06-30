@@ -218,7 +218,8 @@ export default function TimesheetPage() {
     });
 
     const csvString = csvRows.join("\n");
-    const filename = `timesheet_${monthNames[month]}_${year}.csv`;
+    const monthFormatted = String(month + 1).padStart(2, '0');
+    const filename = `timesheet_${year}_${monthFormatted}.csv`;
     const uri = await exportCsv(csvString, filename);
 
     if (uri) {

@@ -232,8 +232,8 @@ export default function ExpensesPage() {
       });
     }
 
-    const suffix = MONTH_NAMES[month] + "_" + year;
-    const filename = "expenses_" + suffix + ".xlsx";
+    const monthFormatted = String(month + 1).padStart(2, '0');
+    const filename = `expenses_${year}_${monthFormatted}.xlsx`;
 
     const uri = await exportExcel(exportData, filename, {
       sheetName: "Expenses",

@@ -3,10 +3,14 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
+    
+    // Trim whitespace to handle mobile auto-spaces
+    const cleanUsername = username?.trim();
+    const cleanPassword = password?.trim();
 
     if (
-      username === process.env.USER_SK_USERNAME &&
-      password === process.env.USER_SK_PASSWORD
+      cleanUsername === process.env.USER_SK_USERNAME &&
+      cleanPassword === process.env.USER_SK_PASSWORD
     ) {
       const response = NextResponse.json({ success: true, message: "Logged in successfully" });
 
@@ -21,8 +25,8 @@ export async function POST(request: Request) {
 
       return response;
     } else if (
-      username === process.env.USER_VS_USERNAME &&
-      password === process.env.USER_VS_PASSWORD
+      cleanUsername === process.env.USER_VS_USERNAME &&
+      cleanPassword === process.env.USER_VS_PASSWORD
     ) {
       const response = NextResponse.json({ success: true, message: "Logged in successfully" });
 

@@ -22,7 +22,7 @@ export async function connectToDatabase() {
   const token = cookieStore.get("auth_token")?.value;
 
   let targetUri = process.env.MONGODB_URI_SK;
-  if (token === "vinish_logged_in") {
+  if (token === "vinisha_logged_in") {
     targetUri = process.env.MONGODB_URI_VS;
   }
 

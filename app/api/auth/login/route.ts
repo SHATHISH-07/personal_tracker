@@ -4,7 +4,10 @@ export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
 
-    if (username === "Shathish Kumaran" && password === "Shathish@07") {
+    if (
+      username === process.env.USER_SK_USERNAME &&
+      password === process.env.USER_SK_PASSWORD
+    ) {
       const response = NextResponse.json({ success: true, message: "Logged in successfully" });
 
       // Set HttpOnly cookie valid for 30 days
@@ -17,11 +20,14 @@ export async function POST(request: Request) {
       });
 
       return response;
-    } else if (username === "VInish Sheran" && password === "Vinisha@25") {
+    } else if (
+      username === process.env.USER_VS_USERNAME &&
+      password === process.env.USER_VS_PASSWORD
+    ) {
       const response = NextResponse.json({ success: true, message: "Logged in successfully" });
 
       // Set HttpOnly cookie valid for 30 days
-      response.cookies.set("auth_token", "vinish_logged_in", {
+      response.cookies.set("auth_token", "vinisha_logged_in", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",

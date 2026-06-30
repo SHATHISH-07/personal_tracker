@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Lock, User, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("Shathish Kumaran");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -114,10 +114,7 @@ export default function LoginPage() {
         {/* Footer Device Lock Attribution */}
         <div className="mt-6 pt-4 border-t border-[#f4f4f5] text-center">
           <p className="text-[0.6875rem] font-medium text-[#71717a] leading-relaxed">
-            Protected Executive Hub for{" "}
-            <span className="text-black font-black block sm:inline">
-              Shathish Kumaran
-            </span>
+            Protected Executive Hub
           </p>
         </div>
       </div>
